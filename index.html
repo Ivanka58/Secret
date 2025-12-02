@@ -11,7 +11,7 @@
 <body>
     <div id="app">
         <!-- Экран входа -->
-        <div id="login-screen" class="screen active">
+        <div id="login-screen" class="screen">
             <div class="login-card">
                 <h2>Добро пожаловать в Секретный Мессенджер</h2>
                 <input type="text" id="code-input" placeholder="Введите ваш уникальный код" autocomplete="off">
@@ -21,13 +21,13 @@
             </div>
         </div>
 
-        <!-- Основной экран мессенджера (пока скрыт) -->
+        <!-- Основной экран мессенджера -->
         <div id="messenger-screen" class="screen hidden">
             <!-- Боковое выдвижное меню -->
             <div id="side-menu" class="side-menu">
                 <div class="side-menu-header">
-                    <img src="https://via.placeholder.com/60" alt="Аватар" class="side-menu-avatar">
-                    <span id="my-profile-name">Шеф (Вы)</span>
+                    <img id="side-menu-avatar" src="https://via.placeholder.com/60" alt="Аватар" class="side-menu-avatar">
+                    <span id="my-profile-name-in-menu">Шеф (Вы)</span>
                 </div>
                 <ul>
                     <li><a href="#" id="my-profile-link"><i class="fas fa-user"></i> Мой профиль</a></li>
@@ -70,6 +70,24 @@
             </div>
         </div>
 
+        <!-- Экран "Мой профиль" -->
+        <div id="profile-screen" class="screen hidden">
+            <div class="profile-header">
+                <button id="back-from-profile-button" class="icon-button"><i class="fas fa-arrow-left"></i></button>
+                <h3>Мой профиль</h3>
+                <button id="edit-profile-button" class="icon-button"><i class="fas fa-pencil-alt"></i></button>
+            </div>
+            <div class="profile-content">
+                <img id="profile-avatar" src="https://via.placeholder.com/120" alt="Аватар" class="profile-avatar">
+                <span id="profile-nickname" class="profile-nickname">Шеф (Вы)</span>
+                
+                <div class="profile-section">
+                    <h4>О себе</h4>
+                    <textarea id="profile-about-input" class="profile-about-input" placeholder="Расскажите о себе" readonly></textarea>
+                </div>
+            </div>
+        </div>
+
         <!-- Модальное окно для поиска контактов (пока скрыто) -->
         <div id="search-modal" class="modal hidden">
             <div class="modal-content">
@@ -84,4 +102,4 @@
     </div>
     <script src="script.js"></script>
 </body>
-</html>
+                        </html>
