@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Элементы экрана входа ---
     const loginScreen = document.getElementById('login-screen');
-    const messengerScreen = document.getElementById('messenger-screen');
     const loginButton = document.getElementById('login-button');
     const codeInput = document.getElementById('code-input');
     const passwordInput = document.getElementById('password-input');
     const loginError = document.getElementById('login-error');
 
+    // --- Элементы основного экрана мессенджера ---
+    const messengerScreen = document.getElementById('messenger-screen');
     const chatListElement = document.getElementById('chat-list');
     const messageListElement = document.getElementById('message-list');
     const messageInputElement = document.getElementById('message-input');
@@ -20,9 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const burgerMenuButton = document.getElementById('burger-menu-button');
     const sideMenu = document.getElementById('side-menu');
-    const myProfileLink = document.getElementById('my-profile-link');
-    const settingsLink = document.getElementById('settings-link');
-    const myProfileNameElement = document.getElementById('my-profile-name');
+    const sideMenuAvatar = document.getElementById('side-menu-avatar');
+    const myProfileNameInMenu = document.getElementById('my-profile-name-in-menu');
 
     const currentChatAvatar = document.querySelector('.current-chat-avatar');
     const currentChatNameElement = document.querySelector('.current-chat-name');
@@ -30,12 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatAreaElement = document.querySelector('.chat-area');
     const backToChatsButton = document.getElementById('back-to-chats-button');
 
-    // --- Backend URL (ВАЖНО: Это будет URL нашего реального Backend-сервера) ---
-    const BACKEND_API_URL = 'https://your-secure-backend.com/api'; // Пример! Нужно будет изменить.
+    // --- Элементы экрана "Мой профиль" ---
+    const profileScreen = document.getElementById('profile-screen');
+    const myProfileLink = document.getElementById('my-profile-link');
+    const backFromProfileButton = document.getElementById('back-from-profile-button');
+    const editProfileButton = document.getElementById('edit-profile-button');
+    const profileAvatar = document.getElementById('profile-avatar');
+    const profileNickname = document.getElementById('profile-nickname');
+    const profileAboutInput = document.getElementById('profile-about-input');
+    const settingsLink = document.getElementById('settings-link'); // Пока не активен
+
+    // --- Backend URL (заглушка) ---
+    const BACKEND_API_URL = 'https://your-secure-backend.com/api';
 
     // --- Глобальные переменные для управления состоянием ---
     let currentChatId = null;
-    let chats = {
+    let chats = JSON.parse(localStorage.getItem('chats')) || {
         'self-chat': {
             id: 'self-chat',
             name: 'Шеф (Вы)',
@@ -46,6 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         }
     };
+    let userProfile = JSON.parse(localStorage.getItem('userProfile')) || {
+        nickname: 'Шеф (Вы)',
+        about: 'Привет! Я создатель этого мессенджера.',
+        avatar: 'https://via.placeholder.com/120'
+    };
 
     // --- Тестовые данные для заглушек ---
     const TEST_CODE = 'DEMO-TEST-001';
@@ -54,16 +70,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Вспомогательные функции ---
 
-    function showScreen(screenId) {
+    function setActiveScreen(screenToShow) {
         document.querySelectorAll('.screen').forEach(screen => {
-            screen.classList.add('hidden');
+            if (screen.id === screenToShow.id) {
+                screen.classList.remove('hidden');
+                screen.classList.add('active');
+                screen.style.transform = 'translateX(0)';
+            } else {
+                screen.classList.remove('active');
+                screen.style.transform = 'translateX(100%)'; // Сдвигаем вправо, чтобы скрыть
+                // Можно добавить таймаут для добавления 'hidden' после анимации,
+                // но пока для простоты будем управлять transform и видимостью
+                setTimeout(() => {
+                     if (!screen.classList.contains('active')) {
+                         screen.classList.add('hidden');
+                     }
+                }, 300); // Соответствует transition time
+            }
         });
-        document.getElementById(screenId).classList.remove('hidden');
-        document.getElementById(screenId).classList.add('active');
     }
 
     function renderMessages(chatId) {
-        messageListElement.innerHTML = ''; // Очищаем список сообщений
+        messageListElement.innerHTML = '';
         const chat = chats[chatId];
         if (!chat) return;
 
@@ -76,11 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             messageListElement.appendChild(messageDiv);
         });
-        messageListElement.scrollTop = messageListElement.scrollHeight; // Прокрутка вниз
+        messageListElement.scrollTop = messageListElement.scrollHeight;
     }
 
     function renderChatList() {
-        chatListElement.innerHTML = ''; // Очищаем список чатов
+        chatListElement.innerHTML = '';
         for (const chatId in chats) {
             const chat = chats[chatId];
             const chatItem = document.createElement('li');
@@ -100,13 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             chatItem.addEventListener('click', () => selectChat(chatId));
         }
+        localStorage.setItem('chats', JSON.stringify(chats)); // Сохраняем чаты
     }
 
     function selectChat(chatId) {
-        if (currentChatId === chatId && chatAreaElement.classList.contains('active-mobile-chat')) {
-             // Если на мобильном и уже активен, не переключаем
-             return;
-        }
+        // Убираем активный класс со всех чатов
+        document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active-chat'));
 
         currentChatId = chatId;
         const chat = chats[chatId];
@@ -115,13 +142,17 @@ document.addEventListener('DOMContentLoaded', () => {
         currentChatNameElement.textContent = chat.name;
 
         renderMessages(chatId);
-        renderChatList(); // Обновить активный чат в списке
+        // Добавляем активный класс к выбранному чату
+        const selectedChatItem = chatListElement.querySelector(`.chat-item[data-chat-id="${chatId}"]`);
+        if (selectedChatItem) {
+            selectedChatItem.classList.add('active-chat');
+        }
 
         // Мобильная логика: показать чат-область, скрыть сайдбар
         if (window.innerWidth <= 768) {
             sidebarElement.classList.add('hidden-mobile');
             chatAreaElement.classList.add('active-mobile-chat');
-            messageInputElement.focus(); // Фокус на поле ввода
+            messageInputElement.focus();
         }
     }
 
@@ -134,10 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const newMessage = { sender: 'self', text: text, time: time };
         chats[currentChatId].messages.push(newMessage);
-        messageInputElement.value = ''; // Очистить поле
-        renderMessages(currentChatId); // Перерисовать сообщения
+        messageInputElement.value = '';
+        renderMessages(currentChatId);
 
-        // Обновить последнее сообщение в списке чатов
         const currentChatItem = chatListElement.querySelector(`.chat-item[data-chat-id="${currentChatId}"]`);
         if (currentChatItem) {
             currentChatItem.querySelector('.last-message').textContent = text;
@@ -149,12 +179,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const autoReplyMessage = { sender: 'other', text: 'Привет!', time: time };
                 chats[currentChatId].messages.push(autoReplyMessage);
                 renderMessages(currentChatId);
-                // Обновить последнее сообщение в списке чатов
                 if (currentChatItem) {
                     currentChatItem.querySelector('.last-message').textContent = autoReplyMessage.text;
                 }
-            }, 1000); // Ответить через 1 секунду
+            }, 1000);
         }
+        localStorage.setItem('chats', JSON.stringify(chats)); // Сохраняем чаты после отправки
+    }
+
+    function renderProfileScreen() {
+        profileAvatar.src = userProfile.avatar;
+        profileNickname.textContent = userProfile.nickname;
+        profileAboutInput.value = userProfile.about;
+        myProfileNameInMenu.textContent = userProfile.nickname; // Обновляем имя в бургер-меню
+        sideMenuAvatar.src = userProfile.avatar; // Обновляем аватар в бургер-меню
+        profileAboutInput.readOnly = true; // Сначала режим чтения
+        editProfileButton.innerHTML = '<i class="fas fa-pencil-alt"></i>'; // Иконка карандаша
     }
 
     // --- Обработчики событий ---
@@ -171,21 +211,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loginError.textContent = '';
 
-        // --- ВРЕМЕННАЯ ЗАГЛУШКА ДЛЯ ВХОДА ---
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         if (code === TEST_CODE && password === TEST_PASSWORD) {
             console.log('Тестовый вход успешен!');
             localStorage.setItem('authToken', 'mock_auth_token_123');
             localStorage.setItem('myUserCode', code);
-            myProfileNameElement.textContent = 'Шеф (Вы)'; // Обновляем имя в бургер-меню
-            showScreen('messenger-screen');
+            userProfile.nickname = 'Шеф (Вы)'; // Устанавливаем базовый ник
+            localStorage.setItem('userProfile', JSON.stringify(userProfile)); // Сохраняем профиль
+            setActiveScreen(messengerScreen);
+            renderProfileScreen(); // Обновить профиль при входе
             renderChatList();
             selectChat('self-chat'); // Выбрать чат с собой по умолчанию
         } else {
             loginError.textContent = 'Неверный код или пароль.';
         }
-        // --- КОНЕЦ ВРЕМЕННОЙ ЗАГЛУШКИ ---
     });
 
     // Обработчик кнопки "Найти контакт"
@@ -211,27 +251,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log(`Поиск контакта с кодом: ${contactCode}`);
 
-        // --- ВРЕМЕННАЯ ЗАГЛУШКА ДЛЯ ПОИСКА КОНТАКТА ---
         await new Promise(resolve => setTimeout(resolve, 700));
 
         if (contactCode === MOCK_EXISTING_CONTACT_CODE) {
-            if (!chats[contactCode]) { // Если чата еще нет, добавляем
+            if (!chats[contactCode]) {
                 chats[contactCode] = {
                     id: contactCode,
                     name: 'Проверка',
-                    avatar: 'https://via.placeholder.com/40?text=П', // Placeholder с буквой П
+                    avatar: 'https://via.placeholder.com/40?text=П',
                     messages: [{ sender: 'other', text: 'Привет! Чем могу помочь?', time: '10:30' }]
                 };
             }
             alert(`Контакт "Проверка" найден и добавлен!`);
             searchModal.classList.add('hidden');
             searchContactCodeInput.value = '';
-            renderChatList(); // Обновить список чатов
-            selectChat(contactCode); // Открыть добавленный чат
+            renderChatList();
+            selectChat(contactCode);
         } else {
             searchError.textContent = 'Контакт с таким кодом не найден (заглушка).';
         }
-        // --- КОНЕЦ ВРЕМЕННОЙ ЗАГЛУШКИ ---
     });
 
     // Обработчик кнопки "Отправить"
@@ -263,55 +301,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Обработчики пунктов меню (пока без действий)
+    // Переход на страницу профиля
     myProfileLink.addEventListener('click', (e) => {
         e.preventDefault();
-        alert('Переход в Мой профиль (в разработке)');
-        sideMenu.classList.remove('active');
+        sideMenu.classList.remove('active'); // Закрыть бургер-меню
         document.querySelector('.overlay')?.classList.remove('active');
-    });
-
-    settingsLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('Переход в Настройки (в разработке)');
-        sideMenu.classList.remove('active');
-        document.querySelector('.overlay')?.classList.remove('active');
+        renderProfileScreen();
+        setActiveScreen(profileScreen);
     });
 
     // Обработчик кнопки "Назад к чатам" (только для мобильных)
     backToChatsButton.addEventListener('click', () => {
         sidebarElement.classList.remove('hidden-mobile');
         chatAreaElement.classList.remove('active-mobile-chat');
-        currentChatId = null; // Сбрасываем активный чат, чтобы скрыть его
-        renderChatList(); // Перерисовать список чатов, чтобы не было активного
+        currentChatId = null;
+        renderChatList();
     });
+
+    // Обработчик кнопки "Назад" с экрана профиля
+    backFromProfileButton.addEventListener('click', () => {
+        setActiveScreen(messengerScreen);
+        renderChatList(); // Убедиться, что чат лист обновлен, если что-то менялось
+    });
+
+    // Обработчик кнопки редактирования профиля
+    editProfileButton.addEventListener('click', () => {
+        if (profileAboutInput.readOnly) {
+            profileAboutInput.readOnly = false;
+            profileAboutInput.focus();
+            editProfileButton.innerHTML = '<i class="fas fa-check"></i>'; // Иконка галочки для сохранения
+        } else {
+            // Сохраняем изменения
+            userProfile.about = profileAboutInput.value.trim();
+            localStorage.setItem('userProfile', JSON.stringify(userProfile)); // Сохраняем профиль
+            profileAboutInput.readOnly = true;
+            editProfileButton.innerHTML = '<i class="fas fa-pencil-alt"></i>'; // Иконка карандаша
+            alert('Профиль сохранен!');
+        }
+    });
+
 
     // --- Инициализация при загрузке страницы ---
     const authToken = localStorage.getItem('authToken');
     if (authToken) {
-        showScreen('messenger-screen');
-        // Если авторизован, сразу отображаем список чатов и выбираем первый
-        renderChatList();
-        selectChat('self-chat');
-        myProfileNameElement.textContent = 'Шеф (Вы)'; // Устанавливаем имя в меню
+        setActiveScreen(messengerScreen); // Показываем мессенджер, если авторизованы
+        renderProfileScreen(); // Загружаем данные профиля
+        renderChatList(); // Отображаем список чатов
+        selectChat('self-chat'); // Выбираем чат по умолчанию
     } else {
-        showScreen('login-screen');
+        setActiveScreen(loginScreen); // Показываем экран входа
     }
 
     // Слушатель изменения размера окна для адаптивности
     window.addEventListener('resize', () => {
-        // Если перешли с мобильного на десктоп, убедимся, что оба блока видны
         if (window.innerWidth > 768) {
             sidebarElement.classList.remove('hidden-mobile');
             chatAreaElement.classList.remove('active-mobile-chat');
-            sideMenu.classList.remove('active'); // Скрываем бургер-меню на десктопе
-            document.querySelector('.overlay')?.classList.remove('active'); // Скрываем оверлей
-        } else { // Если с десктопа на мобильный, и активен чат, то показываем его
-             if (currentChatId && chatAreaElement.classList.contains('active')) {
+            sideMenu.classList.remove('active');
+            document.querySelector('.overlay')?.classList.remove('active');
+        } else {
+             // Если мы на мобильном и текущий экран - мессенджер, и есть активный чат,
+             // то убедимся, что чат-область активна, а сайдбар скрыт
+             if (messengerScreen.classList.contains('active') && currentChatId) {
                 sidebarElement.classList.add('hidden-mobile');
                 chatAreaElement.classList.add('active-mobile-chat');
              }
         }
     });
-
 });
