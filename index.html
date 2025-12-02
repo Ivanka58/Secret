@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наш Секретный Мессенджер</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Экран входа -->
+        <div id="login-screen" class="screen active">
+            <div class="login-card">
+                <h2>Добро пожаловать в Секретный Мессенджер</h2>
+                <input type="text" id="code-input" placeholder="Введите ваш уникальный код" autocomplete="off">
+                <input type="password" id="password-input" placeholder="Введите ваш пароль" autocomplete="off">
+                <button id="login-button">Войти</button>
+                <p id="login-error" class="error-message"></p>
+            </div>
+        </div>
+
+        <!-- Основной экран мессенджера (пока скрыт) -->
+        <div id="messenger-screen" class="screen hidden">
+            <div class="sidebar">
+                <div class="header">
+                    <h3>Чаты</h3>
+                    <button id="search-contact-button">Найти контакт</button>
+                </div>
+                <ul id="chat-list">
+                    <!-- Здесь будут отображаться контакты -->
+                    <li class="chat-item active-chat">
+                        <img src="https://via.placeholder.com/40" alt="Аватар">
+                        <div class="chat-info">
+                            <span class="chat-name">Шеф (Вы)</span>
+                            <span class="last-message">Привет! Как дела?</span>
+                        </div>
+                    </li>
+                    <!-- Пример будущего контакта -->
+                    <!-- <li class="chat-item">
+                        <img src="https://via.placeholder.com/40" alt="Аватар">
+                        <div class="chat-info">
+                            <span class="chat-name">Пользователь 1</span>
+                            <span class="last-message">Ок, принято.</span>
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+            <div class="chat-area">
+                <div class="chat-header">
+                    <img src="https://via.placeholder.com/40" alt="Аватар" class="current-chat-avatar">
+                    <span class="current-chat-name">Шеф (Вы)</span>
+                </div>
+                <div id="message-list" class="message-list">
+                    <!-- Здесь будут сообщения -->
+                    <div class="message incoming">
+                        <span class="message-text">Привет, Шеф! Все готово.</span>
+                        <span class="message-time">10:00</span>
+                    </div>
+                    <div class="message outgoing">
+                        <span class="message-text">Отлично, начинаем!</span>
+                        <span class="message-time">10:01</span>
+                    </div>
+                </div>
+                <div class="message-input-area">
+                    <input type="text" id="message-input" placeholder="Написать сообщение..." autofocus>
+                    <button id="send-button">Отправить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для поиска контактов (пока скрыто) -->
+        <div id="search-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Найти контакт по коду</h3>
+                <input type="text" id="search-contact-code-input" placeholder="Введите код контакта">
+                <button id="add-contact-button">Найти и Добавить</button>
+                <button id="close-search-modal">Закрыть</button>
+                <p id="search-error" class="error-message"></p>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<p id="search-error" class="error-message"></p>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+                      </html>
