@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Backend URL (ВАЖНО: Это будет URL нашего реального Backend-сервера) ---
     // На данный момент это заглушка. Реальный URL нужно будет прописать здесь,
-    // когда Backend будет развернут.
+    // когда Backend будет развернут. Пока используется для закомментированного кода.
     const BACKEND_API_URL = 'https://your-secure-backend.com/api'; // Пример! Нужно будет изменить.
 
     // Функция для переключения между экранами
@@ -39,13 +39,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loginError.textContent = ''; // Очищаем предыдущие ошибки
 
-        // --- Временная заглушка для входа (ПОТОМ БУДЕТ ЗАМЕНЕНО НА РЕАЛЬНЫЙ API-ЗАПРОС) ---
-        // Здесь мы будем отправлять запрос на наш Backend-сервер.
-        // Сервер проверит код/пароль и, если все ОК, вернет токен сессии.
-        console.log(`Попытка входа с кодом: ${code} и паролем: ${password}`);
+        // --- ВРЕМЕННАЯ ЗАГЛУШКА ДЛЯ ВХОДА (УДАЛИТЬ ПОСЛЕ РЕАЛИЗАЦИИ BACKEND) ---
+        // Имитация задержки для демонстрации
+        await new Promise(resolve => setTimeout(resolve, 1000)); 
 
+        const TEST_CODE = 'DEMO-TEST-001';
+        const TEST_PASSWORD = 'SuperSecretPass1!';
+
+        if (code === TEST_CODE && password === TEST_PASSWORD) {
+            console.log('Тестовый вход успешен!');
+            localStorage.setItem('authToken', 'mock_auth_token_123'); // Заглушка токена
+            localStorage.setItem('myUserCode', code); // Сохраняем свой код
+            showScreen('messenger-screen');
+            // Здесь же можно загрузить начальные данные (список чатов, свой профиль)
+        } else {
+            loginError.textContent = 'Неверный код или пароль.';
+        }
+        // --- КОНЕЦ ВРЕМЕННОЙ ЗАГЛУШКИ ---
+        
+        // --- РЕАЛЬНЫЙ КОД ДЛЯ ВЗАИМОДЕЙСТВИЯ С BACKEND (РАСКОММЕНТИРОВАТЬ И УДАЛИТЬ ЗАГЛУШКУ ПОСЛЕ) ---
+        /*
         try {
-            // Имитация задержки сети и проверки на сервере
             const response = await fetch(`${BACKEND_API_URL}/login`, {
                 method: 'POST',
                 headers: {
@@ -57,22 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Вход успешен
                 console.log('Вход успешен! Токен:', data.token);
-                // Сохраняем токен в localStorage или sessionStorage
                 localStorage.setItem('authToken', data.token);
-                localStorage.setItem('myUserCode', code); // Сохраняем свой код
+                localStorage.setItem('myUserCode', code);
                 showScreen('messenger-screen');
-                // Здесь же можно загрузить начальные данные (список чатов, свой профиль)
             } else {
-                // Ошибка входа
                 loginError.textContent = data.message || 'Ошибка входа. Проверьте код и пароль.';
             }
         } catch (error) {
             console.error('Ошибка сети или сервера:', error);
             loginError.textContent = 'Ошибка подключения к серверу. Попробуйте позже.';
         }
-        // --- КОНЕЦ ЗАГЛУШКИ ---
+        */
+        // --- КОНЕЦ РЕАЛЬНОГО КОДА ---
     });
 
     // Обработчик кнопки "Найти контакт"
@@ -98,9 +109,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log(`Поиск контакта с кодом: ${contactCode}`);
 
-        // --- Временная заглушка для поиска (ПОТОМ БУДЕТ ЗАМЕНЕНО НА РЕАЛЬНЫЙ API-ЗАПРОС) ---
-        // Здесь мы будем отправлять запрос на Backend, чтобы проверить существование кода
-        // и получить публичный ключ пользователя для E2EE.
+        // --- ВРЕМЕННАЯ ЗАГЛУШКА ДЛЯ ПОИСКА КОНТАКТА (УДАЛИТЬ ПОСЛЕ РЕАЛИЗАЦИИ BACKEND) ---
+        await new Promise(resolve => setTimeout(resolve, 700)); // Имитация задержки
+
+        const MOCK_EXISTING_CONTACT_CODE = 'TEST-USER-002'; // Пример кода, который "существует"
+        const MOCK_NOT_FOUND_CODE = 'NON-EXISTENT'; // Пример кода, который "не существует"
+
+        if (contactCode === MOCK_EXISTING_CONTACT_CODE) {
+            console.log(`Тестовый контакт "${contactCode}" найден!`);
+            alert(`Контакт "${contactCode}" найден! В будущем здесь будет добавлена возможность начать чат.`);
+            searchModal.classList.add('hidden');
+        } else if (contactCode === MOCK_NOT_FOUND_CODE) {
+            searchError.textContent = 'Контакт с таким кодом не найден (заглушка).';
+        }
+        else {
+            // Для любого другого кода, кроме тестового MOCK_EXISTING_CONTACT_CODE и MOCK_NOT_FOUND_CODE,
+            // тоже считаем, что нашли, чтобы можно было потестировать.
+            // В реальной жизни тут была бы проверка на бэкенде.
+            console.log(`Тестовый контакт "${contactCode}" найден!`);
+            alert(`Контакт "${contactCode}" найден! В будущем здесь будет добавлена возможность начать чат.`);
+            searchModal.classList.add('hidden');
+        }
+        // --- КОНЕЦ ВРЕМЕННОЙ ЗАГЛУШКИ ---
+
+        // --- РЕАЛЬНЫЙ КОД ДЛЯ ВЗАИМОДЕЙСТВИЯ С BACKEND (РАСКОММЕНТИРОВАТЬ И УДАЛИТЬ ЗАГЛУШКУ ПОСЛЕ) ---
+        /*
         try {
             const authToken = localStorage.getItem('authToken');
             const response = await fetch(`${BACKEND_API_URL}/user_by_code?code=${contactCode}`, {
@@ -114,8 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 console.log('Контакт найден:', data);
                 alert(`Контакт "${data.username}" найден! В будущем здесь будет добавлена возможность начать чат.`);
-                // Здесь будет логика добавления контакта в список чатов и начало E2EE сессии
-                searchModal.classList.add('hidden'); // Закрыть модальное окно после успеха
+                searchModal.classList.add('hidden');
             } else {
                 searchError.textContent = data.message || 'Контакт не найден или произошла ошибка.';
             }
@@ -123,7 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Ошибка поиска контакта:', error);
             searchError.textContent = 'Ошибка подключения к серверу при поиске контакта.';
         }
-        // --- КОНЕЦ ЗАГЛУШКИ ---
+        */
+        // --- КОНЕЦ РЕАЛЬНОГО КОДА ---
     });
 
     // Проверяем, авторизован ли пользователь при загрузке страницы
