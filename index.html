@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Наш Секретный Мессенджер</title>
+    <title>Секретный Мессенджер</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Иконка для бургер-меню, используя Font Awesome CDN для простоты -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="app">
@@ -21,49 +23,49 @@
 
         <!-- Основной экран мессенджера (пока скрыт) -->
         <div id="messenger-screen" class="screen hidden">
+            <!-- Боковое выдвижное меню -->
+            <div id="side-menu" class="side-menu">
+                <div class="side-menu-header">
+                    <img src="https://via.placeholder.com/60" alt="Аватар" class="side-menu-avatar">
+                    <span id="my-profile-name">Шеф (Вы)</span>
+                </div>
+                <ul>
+                    <li><a href="#" id="my-profile-link"><i class="fas fa-user"></i> Мой профиль</a></li>
+                    <li><a href="#" id="settings-link"><i class="fas fa-cog"></i> Настройки</a></li>
+                    <!-- Добавить выход или другие пункты по необходимости -->
+                </ul>
+            </div>
+
             <div class="sidebar">
                 <div class="header">
+                    <button id="burger-menu-button" class="icon-button"><i class="fas fa-bars"></i></button>
                     <h3>Чаты</h3>
-                    <button id="search-contact-button">Найти контакт</button>
+                    <button id="search-contact-button" class="icon-button"><i class="fas fa-search"></i></button>
                 </div>
                 <ul id="chat-list">
-                    <!-- Здесь будут отображаться контакты -->
-                    <li class="chat-item active-chat">
+                    <!-- Заглушка чата с собой -->
+                    <li class="chat-item" data-chat-id="self-chat">
                         <img src="https://via.placeholder.com/40" alt="Аватар">
                         <div class="chat-info">
+
                             <span class="chat-name">Шеф (Вы)</span>
-                            <span class="last-message">Привет! Как дела?</span>
+                            <span class="last-message"></span>
                         </div>
                     </li>
-                    <!-- Пример будущего контакта -->
-                    <!-- <li class="chat-item">
-                        <img src="https://via.placeholder.com/40" alt="Аватар">
-                        <div class="chat-info">
-                            <span class="chat-name">Пользователь 1</span>
-                            <span class="last-message">Ок, принято.</span>
-                        </div>
-                    </li> -->
                 </ul>
             </div>
             <div class="chat-area">
                 <div class="chat-header">
+                    <button id="back-to-chats-button" class="icon-button hidden-desktop"><i class="fas fa-arrow-left"></i></button>
                     <img src="https://via.placeholder.com/40" alt="Аватар" class="current-chat-avatar">
-                    <span class="current-chat-name">Шеф (Вы)</span>
+                    <span class="current-chat-name"></span>
                 </div>
                 <div id="message-list" class="message-list">
-                    <!-- Здесь будут сообщения -->
-                    <div class="message incoming">
-                        <span class="message-text">Привет, Шеф! Все готово.</span>
-                        <span class="message-time">10:00</span>
-                    </div>
-                    <div class="message outgoing">
-                        <span class="message-text">Отлично, начинаем!</span>
-                        <span class="message-time">10:01</span>
-                    </div>
+                    <!-- Сообщения будут добавляться сюда JS -->
                 </div>
                 <div class="message-input-area">
                     <input type="text" id="message-input" placeholder="Написать сообщение..." autofocus>
-                    <button id="send-button">Отправить</button>
+                    <button id="send-button"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>
@@ -83,12 +85,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-<p id="search-error" class="error-message"></p>
-            </div>
-        </div>
-
-    </div>
-    <script src="script.js"></script>
-</body>
-                      </html>
