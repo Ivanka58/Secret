@@ -5,97 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Секретный Мессенджер</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Для иконок SVG -->
 </head>
 <body>
-    <!-- Экран входа -->
-    <div class="login-container active" id="loginContainer">
-        <h1>Добро пожаловать в <br> Секретный Мессенджер</h1>
-        <form id="loginForm">
-            <input type="text" id="loginCode" placeholder="Введите ваш уникальный код" required>
-            <input type="password" id="password" placeholder="Введите ваш пароль" required>
-            <button type="submit">Войти</button>
-        </form>
-    </div>
+    <!-- Главный контейнер, который будет центрироваться на странице и содержать все экраны -->
+    <div class="app-wrapper" id="appWrapper">
 
-    <!-- Основное приложение (Список чатов, Экран чата, Профиль) -->
-    <div class="main-app-container" id="mainAppContainer" style="display: none;">
-        <!-- Боковое меню (Sidebar) -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h3>Меню</h3>
-            </div>
-            <ul>
-                <li><a href="#" class="sidebar-item" id="settingsItem">Настройки</a></li>
-                <li><a href="#" class="sidebar-item" id="profileItem">Мой профиль</a></li>
-            </ul>
-        </div>
-        <div class="overlay" id="overlay"></div>
-
-        <!-- Контейнер для списка чатов -->
-        <div class="chat-list-container active" id="chatListContainer">
-            <header class="app-header">
-                <button class="menu-button" id="menuButton">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 6H20M4 12H20M4 18H20" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <h2>Чаты</h2>
-                <button class="search-button" id="searchChatButton">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M21 21L16.65 16.65" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-
-                </button>
-            </header>
-            <div class="chat-list" id="chatList">
-                <!-- Chat items will be rendered here by JS -->
-            </div>
-        </div>
-
-        <!-- Контейнер для экрана беседы -->
-        <div class="chat-conversation-container" id="chatConversationContainer">
-            <header class="app-header">
-                <button class="back-button" id="backToChatListButton">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15 18L9 12L15 6" stroke="var(--text-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <h2 id="currentChatTitle"></h2>
-            </header>
-            <div class="message-display" id="messageDisplay">
-                <!-- Сообщения будут здесь -->
-            </div>
-            <form id="chatMessageForm" class="message-input-form">
-                <input type="text" id="messageInput" placeholder="Напишите сообщение..." required>
-                <button type="submit">Отправить</button>
+        <!-- Экран входа -->
+        <div class="screen login-screen active" id="loginScreen">
+            <h1 class="login-title">Добро<br>пожаловать<br>в<br>Секретный<br>Мессенджер</h1>
+            <form id="loginForm" class="login-form">
+                <input type="text" id="loginCode" placeholder="Введите ваш уникальный код" required>
+                <input type="password" id="password" placeholder="Введите ваш пароль" required>
+                <button type="submit">Войти</button>
             </form>
         </div>
 
-        <!-- Контейнер для профиля -->
-        <div class="profile-container" id="profileContainer">
-            <header class="app-header">
-                <button class="back-button" id="backToChatListFromProfileButton">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15 18L9 12L15 6" stroke="var(--text-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <h2>Мой профиль</h2>
-                <button class="edit-profile-button" id="editProfileButton">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 20H20C20.5523 20 21 19.5523 21 19V19C21 18.4477 20.5523 18 20 18H12M17 3L21 7L13 15H9V11L17 3Z" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-            </header>
-            <div class="profile-content">
-                <div class="avatar-placeholder">
-                    <!-- Аватарка пока пустая -->
+        <!-- Основное приложение (Список чатов, Экран чата, Профиль) -->
+        <div class="screen main-app-screen" id="mainAppScreen">
+            <!-- Боковое меню (Sidebar) -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Меню</h3>
                 </div>
-                <h3 id="profileName"></h3>
-                <div class="about-me-section">
-                    <h4>О себе:</h4>
-                    <p id="profileAbout">Пока пусто...</p>
+                <ul>
+                    <li><a href="#" class="sidebar-item" id="settingsItem">Настройки</a></li>
+                    <li><a href="#" class="sidebar-item" id="profileItem">Мой профиль</a></li>
+                </ul>
+            </div>
+            <div class="overlay" id="overlay"></div>
+
+            <!-- Контейнер для списка чатов -->
+            <div class="sub-screen chat-list-sub-screen active" id="chatListSubScreen">
+                <header class="app-header">
+                    <button class="menu-button" id="menuButton">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 6H20M4 12H20M4 18H20" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <h2>Чаты</h2>
+                    <button class="search-button" id="searchChatButton">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                            <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 21L16.65 16.65" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </header>
+                <div class="chat-list" id="chatList">
+                    <!-- Chat items will be rendered here by JS -->
+                </div>
+            </div>
+
+            <!-- Контейнер для экрана беседы -->
+            <div class="sub-screen chat-conversation-sub-screen" id="chatConversationSubScreen">
+                <header class="app-header">
+                    <button class="back-button" id="backToChatListButton">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <h2 id="currentChatTitle"></h2>
+                </header>
+                <div class="message-display" id="messageDisplay">
+                    <!-- Сообщения будут здесь -->
+                </div>
+                <form id="chatMessageForm" class="message-input-form">
+                    <input type="text" id="messageInput" placeholder="Напишите сообщение..." required>
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+
+            <!-- Контейнер для профиля -->
+            <div class="sub-screen profile-sub-screen" id="profileSubScreen">
+                <header class="app-header">
+                    <button class="back-button" id="backToChatListFromProfileButton">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <h2>Мой профиль</h2>
+                    <button class="edit-profile-button" id="editProfileButton">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 20H20C20.5523 20 21 19.5523 21 19V19C21 18.4477 20.5523 18 20 18H12M17 3L21 7L13 15H9V11L17 3Z" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </header>
+                <div class="profile-content">
+                    <div class="avatar-placeholder">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 14C8.71353 14 6.13621 15.6946 4.96541 18.1066C4.01502 20.0673 5.43265 22 7.56844 22H16.4316C18.5674 22 19.985 20.0673 19.0346 18.1066C17.8638 15.6946 15.2865 14 12 14Z" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 id="profileName"></h3>
+                    <div class="about-me-section">
+                        <h4>О себе:</h4>
+                        <p id="profileAbout">Пока пусто...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,4 +122,4 @@
 
     <script src="script.js"></script>
 </body>
-                </html>
+</html>
