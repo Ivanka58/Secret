@@ -1,20 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Элементы UI ---
-    const loginContainer = document.getElementById('loginContainer');
+    const appWrapper = document.getElementById('appWrapper');
+    const loginScreen = document.getElementById('loginScreen');
     const loginForm = document.getElementById('loginForm');
     const loginCodeInput = document.getElementById('loginCode');
     const passwordInput = document.getElementById('password');
 
-    const mainAppContainer = document.getElementById('mainAppContainer');
-    const chatListContainer = document.getElementById('chatListContainer');
+    const mainAppScreen = document.getElementById('mainAppScreen');
+    const chatListSubScreen = document.getElementById('chatListSubScreen');
     const chatList = document.getElementById('chatList');
-    const chatConversationContainer = document.getElementById('chatConversationContainer');
+    const chatConversationSubScreen = document.getElementById('chatConversationSubScreen');
     const currentChatTitle = document.getElementById('currentChatTitle');
     const messageDisplay = document.getElementById('messageDisplay');
     const messageInput = document.getElementById('messageInput');
     const chatMessageForm = document.getElementById('chatMessageForm');
 
-    const profileContainer = document.getElementById('profileContainer');
+    const profileSubScreen = document.getElementById('profileSubScreen');
     const profileName = document.getElementById('profileName');
     const profileAbout = document.getElementById('profileAbout');
     const editProfileButton = document.getElementById('editProfileButton'); // Пока неактивен
@@ -51,43 +52,41 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     };
 
-    // --- Функции UI ---
+    // --- Функции UI для переключения экранов ---
 
-    function showScreen(screen) {
-        // Скрываем все основные контейнеры
-        loginContainer.classList.remove('active');
-        mainAppContainer.classList.remove('active'); // Главный контейнер тоже скрываем
-        chatListContainer.classList.remove('active');
-        chatConversationContainer.classList.remove('active');
-        profileContainer.classList.remove('active');
+    function showMainScreen(screenId) {
+        // Скрываем все основные экраны (login, main-app)
+        loginScreen.classList.remove('active');
+        mainAppScreen.classList.remove('active');
+
+        // Активируем нужный
+        if (screenId === 'login') {
+            loginScreen.classList.add('active');
+        } else if (screenId === 'mainApp') {
+            mainAppScreen.classList.add('active');
+        }
+    }
+
+    function showSubScreen(subScreenId) {
+        // Скрываем все под-экраны внутри main-app-screen
+        chatListSubScreen.classList.remove('active');
+        chatConversationSubScreen.classList.remove('active');
+        profileSubScreen.classList.remove('active');
 
         // Убеждаемся, что sidebar закрыт
         sidebar.classList.remove('active');
         overlay.style.display = 'none';
 
-        // Активируем нужный экран
-        if (screen === 'login') {
-            loginContainer.classList.add('active');
-            loginContainer.style.display = 'flex'; // Ensure flex display for centering
-            mainAppContainer.style.display = 'none';
-        } else if (screen === 'chatList') {
-            mainAppContainer.classList.add('active');
-            chatListContainer.classList.add('active');
-            mainAppContainer.style.display = 'flex';
-            chatListContainer.style.display = 'flex';
-        } else if (screen === 'chatConversation') {
-            mainAppContainer.classList.add('active');
-            chatConversationContainer.classList.add('active');
-            mainAppContainer.style.display = 'flex';
-            chatConversationContainer.style.display = 'flex';
-        } else if (screen === 'profile') {
-            mainAppContainer.classList.add('active');
-            profileContainer.classList.add('active');
-            mainAppContainer.style.display = 'flex';
-            profileContainer.style.display = 'flex';
+        // Активируем нужный под-экран
+        if (subScreenId === 'chatList') {
+            chatListSubScreen.classList.add('active');
+        } else if (subScreenId === 'chatConversation') {
+            chatConversationSubScreen.classList.add('active');
+        } else if (subScreenId === 'profile') {
+            profileSubScreen.classList.add('active');
         }
+        showMainScreen('mainApp'); // Убедимся, что главный контейнер приложения активен
     }
-
 
     function renderChatList() {
         chatList.innerHTML = '';
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentChatId = chatId;
         currentChatTitle.textContent = chats[chatId].name;
         renderMessages(chatId);
-        showScreen('chatConversation');
+        showSubScreen('chatConversation');
     }
 
     function renderMessages(chatId) {
@@ -161,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const enteredPassword = passwordInput.value;
 
         if (enteredLoginCode === validLoginCode && enteredPassword === validPassword) {
-            showScreen('chatList');
+            showSubScreen('chatList'); // Показываем список чатов
             renderChatList();
             loginCodeInput.value = '';
             passwordInput.value = '';
@@ -178,13 +177,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Кнопка "назад" из беседы в список чатов
     backToChatListButton.addEventListener('click', () => {
         currentChatId = null; // Сбрасываем активный чат
-        showScreen('chatList');
+        showSubScreen('chatList');
         renderChatList(); // Обновим список чатов
     });
 
     // Кнопка "назад" из профиля в список чатов
     backToChatListFromProfileButton.addEventListener('click', () => {
-        showScreen('chatList');
+        showSubScreen('chatList');
         renderChatList();
     });
 
@@ -218,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (findChatButton.textContent === 'Написать') {
             // Если кнопка уже "Написать", то добавляем чат
-            if (!chats['testUser002']) {
+            if (!chats['testUser002']) { // Добавляем чат, только если его нет
                 chats['testUser002'] = {
                     name: 'Проверка',
                     messages: [{ text: 'Привет!', type: 'other' }]
@@ -232,8 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
             findChatButton.textContent = 'Написать';
         } else {
             searchStatusMessage.textContent = 'Чат не найден!';
-            searchStatusMessage.style.color = 'var(--accent-orange)';
-            findChatButton.disabled = true;
+            searchStatusMessage.style.color = 'var(--accent-red)'; // Цвет ошибки
+            findChatButton.disabled = true; // Деактивируем кнопку, если чат не найден
         }
     });
 
@@ -241,9 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
     profileItem.addEventListener('click', (e) => {
         e.preventDefault(); // Предотвращаем переход по ссылке
         renderProfile(); // Обновляем данные профиля
-        showScreen('profile'); // Показываем экран профиля
+        showSubScreen('profile'); // Показываем экран профиля
     });
 
     // --- Инициализация при загрузке ---
-    showScreen('login'); // Начинаем с экрана входа
+    showMainScreen('login'); // Начинаем с экрана входа
 });
