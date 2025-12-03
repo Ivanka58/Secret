@@ -1,103 +1,127 @@
 ss
 :root {
-    --bg-dark: #1a1a1a;
-    --bg-medium: #282828;
-    --text-light: #e0e0e0;
-    --text-dark: #0f0f0f;
-    --accent-green: #00FF00;
-    --accent-blue: #00BFFF;
-    --accent-purple: #9C27B0;
-    --border-color: #3a3a3a;
-    --shadow-glow-green: 0 0 10px rgba(0, 255, 0, 0.5);
-    --shadow-glow-blue: 0 0 10px rgba(0, 191, 255, 0.5);
+    /* Основные цвета */
+    --bg-primary: #121212; /* Самый темный фон (для body, основного приложения) */
+    --bg-secondary: #1e1e1e; /* Чуть светлее (для контейнеров, карточек) */
+    --bg-tertiary: #2a2a2a; /* Еще светлее (для отдельных секций, например, поля ввода) */
+    --text-light: #e0e0e0; /* Светлый текст для основного контента */
+    --text-dark: #0f0f0f; /* Темный текст (для контраста на ярких кнопках) */
+    --border-color: #3a3a3a; /* Цвет границ и разделителей */
+
+    /* Акцентные цвета */
+    --accent-green: #00FF00; /* Неоновый зеленый (для успеха, интерактивных элементов) */
+    --accent-blue: #00BFFF; /* Электрический синий (для UI элементов, других сообщений) */
+    --accent-purple: #BB86FC; /* Мягкий пурпурный (для модальных окон, специальных элементов) */
+    --accent-orange: #CF6679; /* Мягкий оранжевый/красный (для предупреждений) */
+
+    /* Тени и свечения */
+    --shadow-glow-green: 0 0 12px rgba(0, 255, 0, 0.4);
+    --shadow-glow-blue: 0 0 12px rgba(0, 191, 255, 0.4);
+    --shadow-glow-purple: 0 0 12px rgba(187, 134, 252, 0.4);
+    --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-primary);
     color: var(--text-light);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    overflow: hidden; /* Prevent scrolling for the main body */
+    overflow: hidden;
 }
 
 /* Base Container Styling */
 .login-container,
 .main-app-container {
-    background-color: var(--bg-medium);
-    border-radius: 8px;
-    box-shadow: var(--shadow-glow-green);
+    background-color: var(--bg-secondary);
+    border-radius: 12px; /* Более мягкие углы */
+    box-shadow: var(--shadow-subtle), var(--shadow-glow-green);
     width: 90%;
-    max-width: 400px; /* Adjust max-width for better mobile experience */
+    max-width: 400px;
     text-align: center;
-    padding: 20px;
-    box-sizing: border-box; /* Include padding in width */
+    padding: 30px; /* Увеличили отступы */
+    box-sizing: border-box;
     position: relative;
-    transition: all 0.3s ease-in-out;
+    display: flex; /* Для центрирования содержимого */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px; /* Обеспечим минимальную высоту */
 }
 
-h1, h2, h3 {
+.login-container h1 {
     color: var(--accent-green);
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Отступ под заголовком */
+    line-height: 1.3; /* Для читаемости многострочного заголовка */
+    font-size: 28px; /* Чуть крупнее */
 }
 
 input[type="text"],
 input[type="password"] {
-    width: calc(100% - 20px);
-    padding: 12px;
-    margin-bottom: 15px;
+    width: 100%; /* Занимаем всю доступную ширину */
+    padding: 14px; /* Увеличили отступы */
+    margin-bottom: 20px;
     border: 1px solid var(--border-color);
-    background-color: var(--bg-dark);
+    background-color: var(--bg-tertiary);
     color: var(--text-light);
-    border-radius: 6px;
+    border-radius: 8px; /* Более мягкие углы полей */
     outline: none;
     box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: var(--text-light); /* Светлый плейсхолдер */
+    opacity: 0.7; /* Небольшая прозрачность */
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
     border-color: var(--accent-blue);
-    box-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
 }
 
 button {
-    background-color: var(--accent-green);
+    background-color: var(--accent-blue); /* Основная кнопка входа синяя */
     color: var(--text-dark);
-    padding: 12px 25px;
+    padding: 14px 30px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Тень для кнопки */
 }
 
 button:hover {
-    background-color: #00E600; /* Slightly brighter green */
-    box-shadow: 0 0 12px rgba(0, 255, 0, 0.7);
+    background-color: #00A3DA; /* Чуть темнее синий */
+    box-shadow: var(--shadow-subtle), var(--shadow-glow-blue);
 }
 
 /* --- App Specific Styles --- */
 
 .main-app-container {
     padding: 0;
-    overflow: hidden; /* Hide scroll for content switching */
-    height: 600px; /* Fixed height for app container for consistent look */
-    display: flex; /* Use flex to align sidebar and content */
+    overflow: hidden;
+    height: 650px; /* Фиксированная высота для приложения */
+    display: flex;
     flex-direction: column;
+    box-shadow: var(--shadow-subtle); /* Только тень, без свечения на весь контейнер */
 }
 
-/* Header for Chat List and Chat Conversation */
 .app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-tertiary); /* Более светлый фон для шапки */
     border-bottom: 1px solid var(--border-color);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     z-index: 10;
@@ -105,79 +129,38 @@ button:hover {
 
 .app-header h2 {
     margin: 0;
-    color: var(--text-light); /* Make header text less flashy */
-    font-size: 20px;
+    color: var(--text-light);
+    font-size: 22px;
 }
 
-.menu-button, .search-button, .back-button {
+.menu-button, .search-button, .back-button, .edit-profile-button {
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
-    width: 32px; /* Standard size for icons */
-    height: 32px;
+    width: 36px; /* Чуть крупнее иконки */
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.2s ease;
 }
-.menu-button:hover, .search-button:hover, .back-button:hover {
+.menu-button:hover, .search-button:hover, .back-button:hover, .edit-profile-button:hover {
     transform: scale(1.1);
 }
 
-.back-button {
-    font-size: 24px;
-    color: var(--accent-blue);
+.back-button svg path {
+    stroke: var(--text-light); /* Стрелка назад белая */
 }
+.edit-profile-button svg path {
+    stroke: var(--accent-green); /* Маркер зеленый */
+}
+
 
 /* Chat List */
-.chat-list-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%; /* Take full width of main-app-container */
-    position: absolute; /* Position absolutely to allow content switching */
-    top: 0;
-    left: 0;
-    transition: transform 0.3s ease-in-out;
-}
-
-.chat-list {
-    flex-grow: 1; /* Take remaining height */
-    overflow-y: auto;
-    padding: 10px;
-}
-
-.chat-item {
-    background-color: var(--bg-dark);
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    text-align: left;
-    cursor: pointer;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid var(--border-color);
-}
-
-.chat-item:hover {
-    background-color: #2e2e2e;
-    box-shadow: 0 0 8px rgba(0, 191, 255, 0.3);
-}
-
-.chat-item h3 {
-    margin: 0 0 5px 0;
-    color: var(--accent-blue);
-    font-size: 18px;
-}
-
-.chat-item p {
-    margin: 0;
-    color: var(--text-light);
-    font-size: 14px;
-}
-
-/* Chat Conversation */
-.chat-conversation-container {
+.chat-list-container,
+.chat-conversation-container,
+.profile-container {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -185,67 +168,126 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
-    transform: translateX(100%); /* Start off-screen to the right */
     transition: transform 0.3s ease-in-out;
-    background-color: var(--bg-medium); /* Ensure it has its own background */
+    background-color: var(--bg-secondary); /* У контейнеров свой фон */
 }
 
-.chat-conversation-container.active {
-    transform: translateX(0); /* Slide into view */
+.chat-list-container {
+    transform: translateX(0); /* По умолчанию на экране */
+}
+
+.chat-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: var(--bg-primary); /* Темный фон для списка чатов */
+}
+
+.chat-item {
+    background-color: var(--bg-tertiary); /* Более светлый фон для отдельных чатов */
+    padding: 15px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color);
+}
+
+.chat-item:hover {
+    background-color: #383838;
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.3);
+}
+
+.chat-item h3 {
+    margin: 0 0 4px 0;
+    color: var(--accent-blue); /* Имя чата синим */
+    font-size: 17px;
+}
+
+.chat-item p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* Chat Conversation */
+.chat-conversation-container, .profile-container {
+    transform: translateX(100%); /* Начинаем за экраном */
+}
+
+.chat-conversation-container.active, .profile-container.active {
+    transform: translateX(0); /* Слайдим в видимость */
 }
 
 .message-display {
     flex-grow: 1;
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-dark);
+    background-color: var(--bg-primary); /* Фон беседы */
     padding: 15px;
-    margin: 15px;
-    height: calc(100% - 160px); /* Adjust height based on header/input */
+    margin: 0; /* Убираем маргины, чтобы был отступ от формы */
     overflow-y: auto;
     text-align: left;
-    border-radius: 8px;
+    display: flex; /* Flexbox для сообщений */
+    flex-direction: column;
 }
 
-.message-display p {
-    margin: 8px 0;
-    line-height: 1.5;
-    word-wrap: break-word; /* Ensure long words break */
+.message-bubble {
+    padding: 10px 15px;
+    border-radius: 18px; /* Скругленные углы пузырьков */
+    margin-bottom: 10px;
+    max-width: 80%; /* Ограничение ширины пузырька */
+    word-wrap: break-word;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 15px;
 }
 
-.message-display .user-message {
-    color: var(--accent-green);
-    text-align: right;
+.message-bubble.user-message {
+    background-color: var(--accent-green);
+    color: var(--text-dark);
+    align-self: flex-end; /* Выравнивание справа */
+    border-bottom-right-radius: 4px; /* Уголок внизу справа для "хвостика" */
 }
 
-.message-display .other-message {
-    color: var(--accent-blue);
-    text-align: left;
+.message-bubble.other-message {
+    background-color: var(--bg-tertiary);
+    color: var(--text-light);
+    align-self: flex-start; /* Выравнивание слева */
+    border-bottom-left-radius: 4px; /* Уголок внизу слева */
 }
-
 
 .message-input-form {
     display: flex;
     padding: 15px;
     border-top: 1px solid var(--border-color);
-    background-color: var(--bg-dark);
+    background-color: var(--bg-tertiary); /* Фон панели ввода */
 }
 
 .message-input-form input {
     flex-grow: 1;
     margin-right: 10px;
-    margin-bottom: 0; /* Override default margin */
+    margin-bottom: 0;
+    background-color: var(--bg-primary); /* Фон поля ввода сообщения */
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+}
+
+.message-input-form input::placeholder {
+    color: var(--text-light);
+    opacity: 0.6;
 }
 
 .message-input-form button {
     background-color: var(--accent-blue);
     color: var(--text-dark);
     padding: 10px 20px;
-    font-size: 15px;
+    font-size: 16px;
+    box-shadow: none; /* Убираем лишнюю тень с маленькой кнопки */
 }
 
 .message-input-form button:hover {
-    background-color: #009ACD; /* Slightly darker blue */
-    box-shadow: 0 0 12px rgba(0, 191, 255, 0.7);
+    background-color: #009ACD;
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
 }
 
 
@@ -255,9 +297,9 @@ button:hover {
     top: 0;
     left: 0;
     height: 100%;
-    width: 250px;
-    background-color: var(--bg-dark);
-    transform: translateX(-100%); /* Initially hidden */
+    width: 280px; /* Чуть шире */
+    background-color: var(--bg-tertiary); /* Более светлый фон сайдбара */
+    transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     z-index: 20;
     border-right: 1px solid var(--border-color);
@@ -265,7 +307,7 @@ button:hover {
 }
 
 .sidebar.active {
-    transform: translateX(0); /* Slide in */
+    transform: translateX(0);
 }
 
 .sidebar-header {
@@ -277,6 +319,7 @@ button:hover {
 .sidebar-header h3 {
     margin: 0;
     color: var(--accent-green);
+    font-size: 24px;
 }
 
 .sidebar ul {
@@ -286,11 +329,9 @@ button:hover {
 }
 
 .sidebar li {
-    padding: 15px 20px;
     border-bottom: 1px solid var(--border-color);
     text-align: left;
 }
-
 .sidebar li:last-child {
     border-bottom: none;
 }
@@ -298,12 +339,14 @@ button:hover {
 .sidebar-item {
     color: var(--text-light);
     text-decoration: none;
-    font-size: 16px;
+    font-size: 18px;
     display: block;
-    transition: color 0.2s ease;
+    padding: 15px 20px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar-item:hover {
+    background-color: var(--bg-primary); /* Темный фон при наведении */
     color: var(--accent-blue);
 }
 
@@ -313,9 +356,9 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6); /* Более темный оверлей */
     z-index: 15;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
 /* Modal Overlay (for search chat) */
@@ -325,19 +368,19 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8); /* Еще темнее для модала */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
 .modal-content {
-    background-color: var(--bg-medium);
+    background-color: var(--bg-secondary);
     padding: 30px;
-    border-radius: 8px;
-    box-shadow: var(--shadow-glow-purple); /* Using purple glow for modals */
+    border-radius: 12px;
+    box-shadow: var(--shadow-subtle), var(--shadow-glow-purple);
     width: 90%;
     max-width: 350px;
     text-align: center;
@@ -346,6 +389,7 @@ button:hover {
 
 .modal-content h3 {
     color: var(--accent-purple);
+    margin-bottom: 25px;
 }
 
 .modal-content input {
@@ -356,17 +400,20 @@ button:hover {
 .modal-buttons {
     display: flex;
     justify-content: space-around;
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .modal-buttons button {
     background-color: var(--accent-purple);
     color: var(--text-dark);
+    font-size: 16px;
+    padding: 12px 25px;
+    box-shadow: none;
 }
 
 .modal-buttons button:hover {
-    background-color: #8E24AA;
-    box-shadow: 0 0 12px rgba(156, 39, 176, 0.7);
+    background-color: #A06AD3;
+    box-shadow: 0 0 10px rgba(187, 134, 252, 0.7);
 }
 
 .modal-buttons .cancel-button {
@@ -379,16 +426,79 @@ button:hover {
 }
 
 #searchStatusMessage {
-    color: var(--accent-green); /* Status message will be green */
+    color: var(--accent-green);
     margin-top: -10px;
     margin-bottom: 10px;
     font-size: 14px;
-    min-height: 18px; /* Reserve space */
+    min-height: 18px;
+}
+
+/* Profile Container Styles */
+.profile-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    background-color: var(--bg-tertiary);
+    border-radius: 50%;
+    border: 3px solid var(--accent-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    color: var(--accent-green);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-glow-green);
+}
+/* Можете добавить SVG или иконку сюда, например: */
+.avatar-placeholder::before {
+    content: "👤"; /* Простой символ пользователя */
+    font-size: 60px;
+    line-height: 1;
+}
+
+#profileName {
+    color: var(--accent-blue);
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.about-me-section {
+    background-color: var(--bg-tertiary);
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 300px;
+    text-align: left;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-subtle);
+}
+
+.about-me-section h4 {
+    color: var(--accent-green);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.about-me-section p {
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: 15px;
 }
 
 /* Hide containers by default, managed by JS */
 .login-container:not(.active),
 .chat-list-container:not(.active),
-.chat-conversation-container:not(.active) {
+.chat-conversation-container:not(.active),
+.profile-container:not(.active) {
     display: none;
-    }
+}
