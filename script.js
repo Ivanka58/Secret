@@ -14,16 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('messageInput');
     const chatMessageForm = document.getElementById('chatMessageForm');
 
+    const profileContainer = document.getElementById('profileContainer');
+    const profileName = document.getElementById('profileName');
+    const profileAbout = document.getElementById('profileAbout');
+    const editProfileButton = document.getElementById('editProfileButton'); // Пока неактивен
+
     const menuButton = document.getElementById('menuButton');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
-    const backButton = document.getElementById('backButton');
+    const backToChatListButton = document.getElementById('backToChatListButton');
+    const backToChatListFromProfileButton = document.getElementById('backToChatListFromProfileButton');
     const searchChatButton = document.getElementById('searchChatButton');
     const searchChatModalOverlay = document.getElementById('searchChatModalOverlay');
     const searchChatCodeInput = document.getElementById('searchChatCodeInput');
     const findChatButton = document.getElementById('findChatButton');
     const cancelSearchButton = document.getElementById('cancelSearchButton');
     const searchStatusMessage = document.getElementById('searchStatusMessage');
+
+    const profileItem = document.getElementById('profileItem'); // Кнопка "Мой профиль" в меню
+    const settingsItem = document.getElementById('settingsItem'); // Кнопка "Настройки" в меню
 
     // --- Тестовые данные ---
     const validLoginCode = 'DEMO-TEST-001';
@@ -32,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Состояние приложения ---
     let currentChatId = null;
+    let userName = validLoginCode; // Имя пользователя по умолчанию
+    let userAbout = "Пока пусто..."; // О себе по умолчанию
+
     const chats = {
         'self': {
             name: 'Шеф (Вы)',
@@ -41,36 +53,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Функции UI ---
 
-    function showScreen(screenId) {
+    function showScreen(screen) {
         // Скрываем все основные контейнеры
-        loginContainer.style.display = 'none';
-        mainAppContainer.style.display = 'none';
-        chatListContainer.style.display = 'none';
-        chatConversationContainer.style.display = 'none';
+        loginContainer.classList.remove('active');
+        mainAppContainer.classList.remove('active'); // Главный контейнер тоже скрываем
+        chatListContainer.classList.remove('active');
+        chatConversationContainer.classList.remove('active');
+        profileContainer.classList.remove('active');
 
-        // Активируем нужный
-        if (screenId === 'login') {
-            loginContainer.style.display = 'flex';
-        } else if (screenId === 'app') {
+        // Убеждаемся, что sidebar закрыт
+        sidebar.classList.remove('active');
+        overlay.style.display = 'none';
+
+        // Активируем нужный экран
+        if (screen === 'login') {
+            loginContainer.classList.add('active');
+            loginContainer.style.display = 'flex'; // Ensure flex display for centering
+            mainAppContainer.style.display = 'none';
+        } else if (screen === 'chatList') {
+            mainAppContainer.classList.add('active');
+            chatListContainer.classList.add('active');
             mainAppContainer.style.display = 'flex';
-            // Внутри app показываем либо список чатов, либо беседу
-            if (currentChatId) {
-                chatConversationContainer.style.display = 'flex';
-                chatListContainer.style.display = 'none'; // Убедимся, что список скрыт
-                chatConversationContainer.classList.add('active'); // Активируем анимацию
-                chatListContainer.classList.remove('active'); // Деактивируем анимацию
-            } else {
-                chatListContainer.style.display = 'flex';
-                chatConversationContainer.style.display = 'none'; // Убедимся, что беседа скрыта
-                chatListContainer.classList.add('active'); // Активируем анимацию
-                chatConversationContainer.classList.remove('active'); // Деактивируем анимацию
-            }
+            chatListContainer.style.display = 'flex';
+        } else if (screen === 'chatConversation') {
+            mainAppContainer.classList.add('active');
+            chatConversationContainer.classList.add('active');
+            mainAppContainer.style.display = 'flex';
+            chatConversationContainer.style.display = 'flex';
+        } else if (screen === 'profile') {
+            mainAppContainer.classList.add('active');
+            profileContainer.classList.add('active');
+            mainAppContainer.style.display = 'flex';
+            profileContainer.style.display = 'flex';
         }
     }
 
+
     function renderChatList() {
         chatList.innerHTML = '';
-        for (const chatId in chats) {
+        const sortedChatIds = Object.keys(chats).sort((a, b) => {
+            if (a === 'self') return -1; // "Шеф (Вы)" всегда первый
+            if (b === 'self') return 1;
+            return chats[a].name.localeCompare(chats[b].name); // Остальные по имени
+        });
+
+        sortedChatIds.forEach(chatId => {
             const chat = chats[chatId];
             const chatItem = document.createElement('div');
             chatItem.classList.add('chat-item');
@@ -81,24 +108,21 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             chatItem.addEventListener('click', () => openChatConversation(chatId));
             chatList.appendChild(chatItem);
-        }
+        });
     }
 
     function openChatConversation(chatId) {
         currentChatId = chatId;
         currentChatTitle.textContent = chats[chatId].name;
         renderMessages(chatId);
-        chatListContainer.classList.remove('active');
-        chatConversationContainer.classList.add('active');
-        // Убедимся, что контейнеры видны до анимации, если они были `display: none;`
-        chatListContainer.style.display = 'none';
-        chatConversationContainer.style.display = 'flex';
+        showScreen('chatConversation');
     }
 
     function renderMessages(chatId) {
         messageDisplay.innerHTML = '';
         chats[chatId].messages.forEach(msg => {
-            const msgElement = document.createElement('p');
+            const msgElement = document.createElement('div'); // Используем div для пузырька
+            msgElement.classList.add('message-bubble');
             msgElement.classList.add(msg.type === 'user' ? 'user-message' : 'other-message');
             msgElement.textContent = msg.text;
             messageDisplay.appendChild(msgElement);
@@ -123,6 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
         renderChatList(); // Обновим список чатов, чтобы последнее сообщение обновилось
     }
 
+    function renderProfile() {
+        profileName.textContent = userName;
+        profileAbout.textContent = userAbout;
+        // Здесь можно добавить логику для отображения аватарки
+    }
+
     // --- Обработчики событий ---
 
     loginForm.addEventListener('submit', (e) => {
@@ -131,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const enteredPassword = passwordInput.value;
 
         if (enteredLoginCode === validLoginCode && enteredPassword === validPassword) {
-            showScreen('app');
+            showScreen('chatList');
             renderChatList();
             loginCodeInput.value = '';
             passwordInput.value = '';
@@ -145,14 +175,17 @@ document.addEventListener('DOMContentLoaded', () => {
         sendMessage(messageInput.value);
     });
 
-    backButton.addEventListener('click', () => {
+    // Кнопка "назад" из беседы в список чатов
+    backToChatListButton.addEventListener('click', () => {
         currentChatId = null; // Сбрасываем активный чат
-        chatConversationContainer.classList.remove('active');
-        chatListContainer.classList.add('active');
-        // Убедимся, что контейнеры видны до анимации, если они были `display: none;`
-        chatConversationContainer.style.display = 'none';
-        chatListContainer.style.display = 'flex';
+        showScreen('chatList');
         renderChatList(); // Обновим список чатов
+    });
+
+    // Кнопка "назад" из профиля в список чатов
+    backToChatListFromProfileButton.addEventListener('click', () => {
+        showScreen('chatList');
+        renderChatList();
     });
 
     menuButton.addEventListener('click', () => {
@@ -171,33 +204,44 @@ document.addEventListener('DOMContentLoaded', () => {
         searchStatusMessage.textContent = '';
         findChatButton.textContent = 'Найти'; // Сброс текста кнопки
         findChatButton.disabled = false;
+        // Сбросим onclick, чтобы он не вызывался дважды при "Найти" -> "Написать"
+        findChatButton.onclick = null;
     });
 
     cancelSearchButton.addEventListener('click', () => {
         searchChatModalOverlay.style.display = 'none';
     });
 
+    // Обработчик для кнопки "Найти" в модальном окне
     findChatButton.addEventListener('click', () => {
         const enteredCode = searchChatCodeInput.value;
-        if (enteredCode === validChatCode) {
+
+        if (findChatButton.textContent === 'Написать') {
+            // Если кнопка уже "Написать", то добавляем чат
+            if (!chats['testUser002']) {
+                chats['testUser002'] = {
+                    name: 'Проверка',
+                    messages: [{ text: 'Привет!', type: 'other' }]
+                };
+                renderChatList();
+            }
+            searchChatModalOverlay.style.display = 'none';
+        } else if (enteredCode === validChatCode) {
             searchStatusMessage.textContent = 'Чат найден!';
             searchStatusMessage.style.color = 'var(--accent-green)';
             findChatButton.textContent = 'Написать';
-            findChatButton.onclick = () => {
-                if (!chats['testUser002']) { // Добавляем чат, только если его нет
-                    chats['testUser002'] = {
-                        name: 'Проверка',
-                        messages: [{ text: 'Привет!', type: 'other' }]
-                    };
-                    renderChatList();
-                }
-                searchChatModalOverlay.style.display = 'none';
-            };
         } else {
             searchStatusMessage.textContent = 'Чат не найден!';
-            searchStatusMessage.style.color = 'red';
-            findChatButton.disabled = true; // Деактивируем кнопку, если чат не найден
+            searchStatusMessage.style.color = 'var(--accent-orange)';
+            findChatButton.disabled = true;
         }
+    });
+
+    // Обработчик для кнопки "Мой профиль" в сайдбаре
+    profileItem.addEventListener('click', (e) => {
+        e.preventDefault(); // Предотвращаем переход по ссылке
+        renderProfile(); // Обновляем данные профиля
+        showScreen('profile'); // Показываем экран профиля
     });
 
     // --- Инициализация при загрузке ---
