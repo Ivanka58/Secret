@@ -1,29 +1,35 @@
 ss
 :root {
-    /* Основные цвета */
-    --bg-primary: #121212; /* Самый темный фон (для body, основного приложения) */
-    --bg-secondary: #1e1e1e; /* Чуть светлее (для контейнеров, карточек) */
-    --bg-tertiary: #2a2a2a; /* Еще светлее (для отдельных секций, например, поля ввода) */
-    --text-light: #e0e0e0; /* Светлый текст для основного контента */
-    --text-dark: #0f0f0f; /* Темный текст (для контраста на ярких кнопках) */
-    --border-color: #3a3a3a; /* Цвет границ и разделителей */
+    /* Основные цвета - более темная и строгая палитра */
+    --bg-darkest: #0A0A0A; /* Самый темный фон (для body) */
+    --bg-primary: #121212; /* Основной фон приложения и больших блоков */
+    --bg-secondary: #1E1E1E; /* Фон для карточек, списков, заголовков */
+    --bg-tertiary: #2A2A2A; /* Фон для полей ввода, некоторых пузырьков */
+    --bg-quaternary: #383838; /* Фон для активных состояний, кнопок */
 
-    /* Акцентные цвета */
-    --accent-green: #00FF00; /* Неоновый зеленый (для успеха, интерактивных элементов) */
-    --accent-blue: #00BFFF; /* Электрический синий (для UI элементов, других сообщений) */
-    --accent-purple: #BB86FC; /* Мягкий пурпурный (для модальных окон, специальных элементов) */
-    --accent-orange: #CF6679; /* Мягкий оранжевый/красный (для предупреждений) */
+    --text-light: #FFFFFF; /* Белый текст для основного контента */
+    --text-secondary: #CCCCCC; /* Светло-серый текст для вспомогательной информации */
+    --text-placeholder: #888888; /* Цвет плейсхолдеров */
+    --text-dark: #000000; /* Черный текст (на ярких фонах) */
+
+    --border-color: #4A4A4A; /* Цвет границ и разделителей */
+
+    /* Акцентные цвета - яркие, но используются только для выделения */
+    --accent-green: #00FF00; /* Неоновый зеленый (успех, важные акценты) */
+    --accent-blue: #00BFFF; /* Электрический синий (UI, другие сообщения) */
+    --accent-purple: #BB86FC; /* Мягкий пурпурный (модальные окна, специальные) */
+    --accent-red: #CF6679; /* Мягкий красный (предупреждения, ошибки) */
 
     /* Тени и свечения */
-    --shadow-glow-green: 0 0 12px rgba(0, 255, 0, 0.4);
-    --shadow-glow-blue: 0 0 12px rgba(0, 191, 255, 0.4);
-    --shadow-glow-purple: 0 0 12px rgba(187, 134, 252, 0.4);
-    --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.4);
+    --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.4); /* Мягкая тень */
+    --glow-green: 0 0 8px rgba(0, 255, 0, 0.5);
+    --glow-blue: 0 0 8px rgba(0, 191, 255, 0.5);
+    --glow-purple: 0 0 8px rgba(187, 134, 252, 0.5);
 }
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: var(--bg-primary);
+    background-color: var(--bg-darkest); /* Самый темный фон для всего */
     color: var(--text-light);
     display: flex;
     justify-content: center;
@@ -33,62 +39,90 @@ body {
     overflow: hidden;
 }
 
-/* Base Container Styling */
-.login-container,
-.main-app-container {
-    background-color: var(--bg-secondary);
-    border-radius: 12px; /* Более мягкие углы */
-    box-shadow: var(--shadow-subtle), var(--shadow-glow-green);
+/* Общая обертка для всех экранов, чтобы центрировать приложение */
+.app-wrapper {
     width: 90%;
-    max-width: 400px;
-    text-align: center;
-    padding: 30px; /* Увеличили отступы */
-    box-sizing: border-box;
-    position: relative;
-    display: flex; /* Для центрирования содержимого */
+    max-width: 400px; /* Фиксированная максимальная ширина для мобильного вида */
+    height: 650px; /* Фиксированная высота приложения */
+    position: relative; /* Для позиционирования внутренних экранов */
+    background-color: transparent; /* Обертка без своего фона */
+    overflow: hidden; /* Скрываем части экранов, которые уезжают */
+    border-radius: 12px;
+    box-shadow: var(--shadow-subtle);
+}
+
+/* Стили для основных экранов (login, main-app) */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary); /* Основной фон для активного экрана */
+    display: flex; /* По умолчанию flex для активного экрана */
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 500px; /* Обеспечим минимальную высоту */
+    justify-content: center; /* Центрирование содержимого по вертикали */
+    align-items: center; /* Центрирование содержимого по горизонтали */
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    opacity: 0; /* Изначально скрыты */
+    pointer-events: none; /* Не реагируют на события, когда скрыты */
 }
 
-.login-container h1 {
-    color: var(--accent-green);
-    margin-bottom: 30px; /* Отступ под заголовком */
-    line-height: 1.3; /* Для читаемости многострочного заголовка */
-    font-size: 28px; /* Чуть крупнее */
+.screen.active {
+    opacity: 1; /* Показываем активный экран */
+    pointer-events: auto; /* Реагируют на события */
+    transform: translateX(0); /* Если нужно было перемещать, то возвращаем на место */
 }
 
-input[type="text"],
-input[type="password"] {
-    width: 100%; /* Занимаем всю доступную ширину */
-    padding: 14px; /* Увеличили отступы */
+/* Отдельные стили для экрана входа */
+.login-screen {
+    justify-content: flex-start; /* Выравнивание сверху */
+    align-items: flex-start; /* Выравнивание слева */
+    padding: 40px; /* Отступы для содержимого */
+    box-sizing: border-box;
+}
+
+.login-title {
+    color: var(--text-light);
+    font-size: 32px; /* Крупнее, как на скриншоте */
+    line-height: 1.2;
+    margin-bottom: 40px; /* Отступ от полей ввода */
+    text-align: left;
+    font-weight: bold;
+}
+
+.login-form {
+    width: 100%; /* Форма занимает всю доступную ширину */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Выравнивание элементов формы по левому краю */
+}
+
+.login-form input {
+    width: 100%; /* Поля ввода на всю ширину */
+    padding: 14px;
     margin-bottom: 20px;
     border: 1px solid var(--border-color);
     background-color: var(--bg-tertiary);
     color: var(--text-light);
-    border-radius: 8px; /* Более мягкие углы полей */
+    border-radius: 8px;
     outline: none;
     box-sizing: border-box;
     font-size: 16px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-input[type="text"]::placeholder,
-input[type="password"]::placeholder {
-    color: var(--text-light); /* Светлый плейсхолдер */
-    opacity: 0.7; /* Небольшая прозрачность */
+.login-form input::placeholder {
+    color: var(--text-placeholder);
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
+.login-form input:focus {
     border-color: var(--accent-blue);
-    box-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.3);
 }
 
-button {
-    background-color: var(--accent-blue); /* Основная кнопка входа синяя */
-    color: var(--text-dark);
+.login-form button {
+    background-color: var(--bg-quaternary); /* Темно-серая кнопка входа */
+    color: var(--text-light);
     padding: 14px 30px;
     border: none;
     border-radius: 8px;
@@ -97,40 +131,55 @@ button {
     font-weight: bold;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     outline: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Тень для кнопки */
+    box-shadow: var(--shadow-subtle);
+    align-self: flex-start; /* Выравнивание кнопки по левому краю */
 }
 
-button:hover {
-    background-color: #00A3DA; /* Чуть темнее синий */
-    box-shadow: var(--shadow-subtle), var(--shadow-glow-blue);
+.login-form button:hover {
+    background-color: var(--border-color); /* Чуть светлее при наведении */
 }
 
-/* --- App Specific Styles --- */
+/* --- Main App Screen Styles (содержит чаты и профиль) --- */
+.main-app-screen {
+    background-color: var(--bg-primary); /* Основной фон для приложения */
+}
 
-.main-app-container {
-    padding: 0;
-    overflow: hidden;
-    height: 650px; /* Фиксированная высота для приложения */
+/* Стили для дочерних экранов внутри main-app-screen (chat list, chat conversation, profile) */
+.sub-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow-subtle); /* Только тень, без свечения на весь контейнер */
+    background-color: var(--bg-primary); /* Базовый фон для под-экранов */
+    transition: transform 0.4s ease-in-out;
+    transform: translateX(100%); /* Изначально скрыты справа */
+    z-index: 1; /* По умолчанию ниже */
 }
 
+.sub-screen.active {
+    transform: translateX(0); /* Активный экран выезжает на место */
+    z-index: 2; /* Активный экран поверх других */
+}
+
+/* Header for Chat List, Chat Conversation, Profile */
 .app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background-color: var(--bg-tertiary); /* Более светлый фон для шапки */
+    background-color: var(--bg-secondary); /* Фон для шапки */
     border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-subtle);
     z-index: 10;
 }
 
 .app-header h2 {
     margin: 0;
     color: var(--text-light);
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .menu-button, .search-button, .back-button, .edit-profile-button {
@@ -138,8 +187,8 @@ button:hover {
     border: none;
     padding: 0;
     cursor: pointer;
-    width: 36px; /* Чуть крупнее иконки */
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -149,42 +198,20 @@ button:hover {
     transform: scale(1.1);
 }
 
-.back-button svg path {
-    stroke: var(--text-light); /* Стрелка назад белая */
-}
 .edit-profile-button svg path {
     stroke: var(--accent-green); /* Маркер зеленый */
 }
 
-
 /* Chat List */
-.chat-list-container,
-.chat-conversation-container,
-.profile-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: transform 0.3s ease-in-out;
-    background-color: var(--bg-secondary); /* У контейнеров свой фон */
-}
-
-.chat-list-container {
-    transform: translateX(0); /* По умолчанию на экране */
-}
-
-.chat-list {
+.chat-list-sub-screen .chat-list {
     flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
-    background-color: var(--bg-primary); /* Темный фон для списка чатов */
+    background-color: var(--bg-primary); /* Фон для самого списка чатов */
 }
 
 .chat-item {
-    background-color: var(--bg-tertiary); /* Более светлый фон для отдельных чатов */
+    background-color: var(--bg-secondary); /* Фон для каждого элемента чата */
     padding: 15px;
     margin-bottom: 8px;
     border-radius: 10px;
@@ -195,48 +222,39 @@ button:hover {
 }
 
 .chat-item:hover {
-    background-color: #383838;
-    box-shadow: 0 0 8px rgba(0, 191, 255, 0.3);
+    background-color: var(--bg-tertiary); /* Чуть светлее при наведении */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); /* Легкое свечение */
 }
 
 .chat-item h3 {
     margin: 0 0 4px 0;
-    color: var(--accent-blue); /* Имя чата синим */
+    color: var(--text-light); /* Имя чата белое */
     font-size: 17px;
 }
 
 .chat-item p {
     margin: 0;
-    color: var(--text-light);
+    color: var(--text-secondary); /* Последнее сообщение светло-серое */
     font-size: 13px;
     opacity: 0.8;
 }
 
 /* Chat Conversation */
-.chat-conversation-container, .profile-container {
-    transform: translateX(100%); /* Начинаем за экраном */
-}
-
-.chat-conversation-container.active, .profile-container.active {
-    transform: translateX(0); /* Слайдим в видимость */
-}
-
-.message-display {
+.chat-conversation-sub-screen .message-display {
     flex-grow: 1;
     background-color: var(--bg-primary); /* Фон беседы */
     padding: 15px;
-    margin: 0; /* Убираем маргины, чтобы был отступ от формы */
     overflow-y: auto;
     text-align: left;
-    display: flex; /* Flexbox для сообщений */
+    display: flex;
     flex-direction: column;
 }
 
 .message-bubble {
     padding: 10px 15px;
-    border-radius: 18px; /* Скругленные углы пузырьков */
+    border-radius: 18px;
     margin-bottom: 10px;
-    max-width: 80%; /* Ограничение ширины пузырька */
+    max-width: 80%;
     word-wrap: break-word;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     font-size: 15px;
@@ -244,50 +262,49 @@ button:hover {
 
 .message-bubble.user-message {
     background-color: var(--accent-green);
-    color: var(--text-dark);
-    align-self: flex-end; /* Выравнивание справа */
-    border-bottom-right-radius: 4px; /* Уголок внизу справа для "хвостика" */
+    color: var(--text-dark); /* Черный текст на зеленом фоне */
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
 }
 
 .message-bubble.other-message {
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-tertiary); /* Темно-серый фон для других сообщений */
     color: var(--text-light);
-    align-self: flex-start; /* Выравнивание слева */
-    border-bottom-left-radius: 4px; /* Уголок внизу слева */
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
 }
 
 .message-input-form {
     display: flex;
     padding: 15px;
     border-top: 1px solid var(--border-color);
-    background-color: var(--bg-tertiary); /* Фон панели ввода */
+    background-color: var(--bg-secondary); /* Фон панели ввода */
 }
 
 .message-input-form input {
     flex-grow: 1;
     margin-right: 10px;
     margin-bottom: 0;
-    background-color: var(--bg-primary); /* Фон поля ввода сообщения */
+    background-color: var(--bg-tertiary); /* Фон поля ввода сообщения */
     border: 1px solid var(--border-color);
     color: var(--text-light);
 }
 
 .message-input-form input::placeholder {
-    color: var(--text-light);
-    opacity: 0.6;
+    color: var(--text-placeholder);
 }
 
 .message-input-form button {
-    background-color: var(--accent-blue);
+    background-color: var(--accent-blue); /* Кнопка "Отправить" синяя */
     color: var(--text-dark);
     padding: 10px 20px;
     font-size: 16px;
-    box-shadow: none; /* Убираем лишнюю тень с маленькой кнопки */
+    box-shadow: none;
 }
 
 .message-input-form button:hover {
-    background-color: #009ACD;
-    box-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
+    background-color: #00A3DA;
+    box-shadow: var(--glow-blue);
 }
 
 
@@ -297,13 +314,15 @@ button:hover {
     top: 0;
     left: 0;
     height: 100%;
-    width: 280px; /* Чуть шире */
-    background-color: var(--bg-tertiary); /* Более светлый фон сайдбара */
+    width: 280px;
+    background-color: var(--bg-secondary); /* Фон сайдбара */
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     z-index: 20;
     border-right: 1px solid var(--border-color);
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    display: flex; /* Для flex-direction: column */
+    flex-direction: column;
 }
 
 .sidebar.active {
@@ -318,7 +337,7 @@ button:hover {
 
 .sidebar-header h3 {
     margin: 0;
-    color: var(--accent-green);
+    color: var(--accent-green); /* Заголовок меню зеленый */
     font-size: 24px;
 }
 
@@ -326,6 +345,7 @@ button:hover {
     list-style: none;
     padding: 0;
     margin: 0;
+    flex-grow: 1; /* Занимает оставшееся место */
 }
 
 .sidebar li {
@@ -346,7 +366,7 @@ button:hover {
 }
 
 .sidebar-item:hover {
-    background-color: var(--bg-primary); /* Темный фон при наведении */
+    background-color: var(--bg-tertiary); /* Темнее фон при наведении */
     color: var(--accent-blue);
 }
 
@@ -356,19 +376,19 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Более темный оверлей */
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 15;
     display: none;
 }
 
 /* Modal Overlay (for search chat) */
 .modal-overlay {
-    position: fixed;
+    position: absolute; /* Внутри app-wrapper */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Еще темнее для модала */
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -380,7 +400,7 @@ button:hover {
     background-color: var(--bg-secondary);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: var(--shadow-subtle), var(--shadow-glow-purple);
+    box-shadow: var(--shadow-subtle), var(--glow-purple);
     width: 90%;
     max-width: 350px;
     text-align: center;
@@ -413,15 +433,15 @@ button:hover {
 
 .modal-buttons button:hover {
     background-color: #A06AD3;
-    box-shadow: 0 0 10px rgba(187, 134, 252, 0.7);
+    box-shadow: var(--glow-purple);
 }
 
 .modal-buttons .cancel-button {
-    background-color: var(--border-color);
+    background-color: var(--bg-tertiary); /* Темно-серая кнопка отмены */
     color: var(--text-light);
 }
 .modal-buttons .cancel-button:hover {
-    background-color: #4a4a4a;
+    background-color: var(--border-color);
     box-shadow: none;
 }
 
@@ -434,7 +454,7 @@ button:hover {
 }
 
 /* Profile Container Styles */
-.profile-content {
+.profile-sub-screen .profile-content {
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -442,6 +462,7 @@ button:hover {
     text-align: center;
     flex-grow: 1;
     overflow-y: auto;
+    background-color: var(--bg-primary); /* Фон контента профиля */
 }
 
 .avatar-placeholder {
@@ -453,26 +474,25 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 48px;
-    color: var(--accent-green);
     margin-bottom: 20px;
-    box-shadow: var(--shadow-glow-green);
+    box-shadow: var(--glow-green);
 }
-/* Можете добавить SVG или иконку сюда, например: */
-.avatar-placeholder::before {
-    content: "👤"; /* Простой символ пользователя */
-    font-size: 60px;
-    line-height: 1;
+.avatar-placeholder svg {
+    fill: none;
+    stroke: var(--accent-green);
+    stroke-width: 2;
+    width: 60px;
+    height: 60px;
 }
 
 #profileName {
-    color: var(--accent-blue);
+    color: var(--text-light); /* Имя профиля белое */
     font-size: 28px;
     margin-bottom: 20px;
 }
 
 .about-me-section {
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-secondary); /* Фон для секции "О себе" */
     padding: 20px;
     border-radius: 10px;
     width: 90%;
@@ -483,22 +503,14 @@ button:hover {
 }
 
 .about-me-section h4 {
-    color: var(--accent-green);
+    color: var(--accent-green); /* Заголовок "О себе" зеленый */
     margin-top: 0;
     margin-bottom: 10px;
     font-size: 18px;
 }
 
 .about-me-section p {
-    color: var(--text-light);
+    color: var(--text-secondary); /* Текст "О себе" светло-серый */
     line-height: 1.6;
     font-size: 15px;
-}
-
-/* Hide containers by default, managed by JS */
-.login-container:not(.active),
-.chat-list-container:not(.active),
-.chat-conversation-container:not(.active),
-.profile-container:not(.active) {
-    display: none;
-}
+    }
