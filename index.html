@@ -1,31 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Messenger</title>
+    <title>Секретный Мессенджер</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <div class="login-container">
-        <h1>Welcome to Secret Messenger</h1>
+    <!-- Экран входа -->
+    <div class="login-container active" id="loginContainer">
+        <h1>Добро пожаловать в Секретный Мессенджер</h1>
         <form id="loginForm">
-            <input type="text" id="loginCode" placeholder="Enter Login Code" required>
-            <input type="password" id="password" placeholder="Enter Password" required>
-            <button type="submit">Login</button>
+            <input type="text" id="loginCode" placeholder="Код входа" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
         </form>
     </div>
 
-    <div class="chat-container" style="display: none;">
-        <h2>Secret Chat</h2>
-        <div class="message-display" id="messageDisplay">
-            <!-- Messages will be displayed here -->
+    <!-- Основное приложение (Список чатов и Экран чата) -->
+    <div class="main-app-container" id="mainAppContainer" style="display: none;">
+        <!-- Боковое меню (Sidebar) -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Меню</h3>
+            </div>
+            <ul>
+                <li><a href="#" class="sidebar-item">Настройки</a></li>
+                <li><a href="#" class="sidebar-item">Мой профиль</a></li>
+            </ul>
         </div>
-        <form id="chatForm">
-            <input type="text" id="chatCode" placeholder="Enter Chat Code" required>
-            <input type="text" id="messageInput" placeholder="Type your message..." required>
-            <button type="submit">Send</button>
-        </form>
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Контейнер для списка чатов -->
+        <div class="chat-list-container active" id="chatListContainer">
+            <header class="app-header">
+                <button class="menu-button" id="menuButton">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6H20M4 12H20M4 18H20" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <h2>Чаты</h2>
+                <button class="search-button" id="searchChatButton">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 21L16.65 16.65" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                </button>
+            </header>
+            <div class="chat-list" id="chatList">
+                <div class="chat-item" data-chat-id="self">
+                    <h3>Шеф (Вы)</h3>
+                    <p>Привет!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Контейнер для экрана беседы -->
+        <div class="chat-conversation-container" id="chatConversationContainer">
+            <header class="app-header">
+                <button class="back-button" id="backButton">
+                    &#x2190; <!-- Left arrow Unicode character -->
+                </button>
+                <h2 id="currentChatTitle"></h2>
+            </header>
+            <div class="message-display" id="messageDisplay">
+                <!-- Сообщения будут здесь -->
+            </div>
+            <form id="chatMessageForm" class="message-input-form">
+                <input type="text" id="messageInput" placeholder="Напишите сообщение..." required>
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно для поиска чата -->
+    <div class="modal-overlay" id="searchChatModalOverlay">
+        <div class="modal-content">
+            <h3>Поиск чата</h3>
+            <input type="text" id="searchChatCodeInput" placeholder="Введите код чата">
+            <p id="searchStatusMessage"></p>
+            <div class="modal-buttons">
+                <button id="findChatButton">Найти</button>
+                <button id="cancelSearchButton" class="cancel-button">Отмена</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
