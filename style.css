@@ -1,4 +1,6 @@
 ss
+/* stati/ss/style.css - Переработанный код с сохранением структуры */
+
 :root {
     /* Основные цвета - более темная и строгая палитра */
     --bg-darkest: #0A0A0A; /* Самый темный фон (для body) */
@@ -7,18 +9,22 @@ ss
     --bg-tertiary: #2A2A2A; /* Фон для полей ввода, некоторых пузырьков */
     --bg-quaternary: #383838; /* Фон для активных состояний, кнопок */
 
+
     --text-light: #FFFFFF; /* Белый текст для основного контента */
     --text-secondary: #CCCCCC; /* Светло-серый текст для вспомогательной информации */
     --text-placeholder: #888888; /* Цвет плейсхолдеров */
     --text-dark: #000000; /* Черный текст (на ярких фонах) */
 
+
     --border-color: #4A4A4A; /* Цвет границ и разделителей */
+
 
     /* Акцентные цвета - яркие, но используются только для выделения */
     --accent-green: #00FF00; /* Неоновый зеленый (успех, важные акценты) */
     --accent-blue: #00BFFF; /* Электрический синий (UI, другие сообщения) */
     --accent-purple: #BB86FC; /* Мягкий пурпурный (модальные окна, специальные) */
     --accent-red: #CF6679; /* Мягкий красный (предупреждения, ошибки) */
+
 
     /* Тени и свечения */
     --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.4); /* Мягкая тень */
@@ -27,9 +33,15 @@ ss
     --glow-purple: 0 0 8px rgba(187, 134, 252, 0.5);
 }
 
+
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: var(--bg-darkest); /* Самый темный фон для всего */
+    /* Изначальный фон */
+    /* background-color: var(--bg-darkest); */
+    /* НОВОЕ: Градиент на фон вместо просто черного цвета */
+    background: linear-gradient(135deg, #0A0A0A, #161616, #0F0F0F); /* Глубокий темный градиент */
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite; /* Анимированный градиент */
     color: var(--text-light);
     display: flex;
     justify-content: center;
@@ -38,6 +50,14 @@ body {
     margin: 0;
     overflow: hidden;
 }
+
+/* Анимация градиента для body */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 
 /* Общая обертка для всех экранов, чтобы центрировать приложение */
 .app-wrapper {
@@ -48,8 +68,11 @@ body {
     background-color: transparent; /* Обертка без своего фона */
     overflow: hidden; /* Скрываем части экранов, которые уезжают */
     border-radius: 12px;
-    box-shadow: var(--shadow-subtle);
+    /* НОВОЕ: Более выразительная тень для app-wrapper */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(74, 74, 74, 0.5); /* Тонкая рамка */
 }
+
 
 /* Стили для основных экранов (login, main-app) */
 .screen {
@@ -68,11 +91,13 @@ body {
     pointer-events: none; /* Не реагируют на события, когда скрыты */
 }
 
+
 .screen.active {
     opacity: 1; /* Показываем активный экран */
     pointer-events: auto; /* Реагируют на события */
     transform: translateX(0); /* Если нужно было перемещать, то возвращаем на место */
 }
+
 
 /* Отдельные стили для экрана входа */
 .login-screen {
@@ -82,14 +107,18 @@ body {
     box-sizing: border-box;
 }
 
+
 .login-title {
-    color: var(--text-light);
-    font-size: 32px; /* Крупнее, как на скриншоте */
+    /* НОВОЕ: Крупнее, как на скриншоте, и акцентный цвет */
+    color: var(--accent-blue);
+    font-size: 36px;
     line-height: 1.2;
-    margin-bottom: 40px; /* Отступ от полей ввода */
+    margin-bottom: 40px;
     text-align: left;
     font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 191, 255, 0.4); /* Мягкое свечение */
 }
+
 
 .login-form {
     width: 100%; /* Форма занимает всю доступную ширину */
@@ -97,6 +126,7 @@ body {
     flex-direction: column;
     align-items: flex-start; /* Выравнивание элементов формы по левому краю */
 }
+
 
 .login-form input {
     width: 100%; /* Поля ввода на всю ширину */
@@ -111,18 +141,23 @@ body {
     font-size: 16px;
 }
 
+
 .login-form input::placeholder {
     color: var(--text-placeholder);
 }
 
+
 .login-form input:focus {
     border-color: var(--accent-blue);
-    box-shadow: 0 0 8px rgba(0, 191, 255, 0.3);
+    /* НОВОЕ: Усиленное свечение при фокусе */
+    box-shadow: var(--glow-blue);
 }
 
+
 .login-form button {
-    background-color: var(--bg-quaternary); /* Темно-серая кнопка входа */
-    color: var(--text-light);
+    /* НОВОЕ: Более яркая кнопка входа */
+    background-color: var(--accent-green); /* Неоновый зеленый */
+    color: var(--text-dark); /* Черный текст на зеленом */
     padding: 14px 30px;
     border: none;
     border-radius: 8px;
@@ -135,14 +170,18 @@ body {
     align-self: flex-start; /* Выравнивание кнопки по левому краю */
 }
 
+
 .login-form button:hover {
-    background-color: var(--border-color); /* Чуть светлее при наведении */
+    background-color: #00E600; /* Чуть светлее зеленый при наведении */
+    box-shadow: var(--glow-green); /* Свечение при наведении */
 }
+
 
 /* --- Main App Screen Styles (содержит чаты и профиль) --- */
 .main-app-screen {
     background-color: var(--bg-primary); /* Основной фон для приложения */
 }
+
 
 /* Стили для дочерних экранов внутри main-app-screen (chat list, chat conversation, profile) */
 .sub-screen {
@@ -159,10 +198,12 @@ body {
     z-index: 1; /* По умолчанию ниже */
 }
 
+
 .sub-screen.active {
     transform: translateX(0); /* Активный экран выезжает на место */
     z-index: 2; /* Активный экран поверх других */
 }
+
 
 /* Header for Chat List, Chat Conversation, Profile */
 .app-header {
@@ -176,11 +217,15 @@ body {
     z-index: 10;
 }
 
+
 .app-header h2 {
     margin: 0;
-    color: var(--text-light);
+    /* НОВОЕ: Цвет для заголовков в шапке */
+    color: var(--accent-blue);
     font-size: 20px;
+    text-shadow: 0 0 5px rgba(0, 191, 255, 0.3); /* Мягкое свечение */
 }
+
 
 .menu-button, .search-button, .back-button, .edit-profile-button {
     background: none;
@@ -198,9 +243,25 @@ body {
     transform: scale(1.1);
 }
 
+/* НОВОЕ: Добавляем цвет иконкам кнопок в шапке */
+.menu-button svg, .search-button svg, .back-button svg {
+    fill: none;
+    stroke: var(--text-light); /* Белый для основных иконок */
+    stroke-width: 2;
+}
+.menu-button:hover svg, .search-button:hover svg, .back-button:hover svg {
+    stroke: var(--accent-blue); /* Синий при наведении */
+}
+
+
 .edit-profile-button svg path {
     stroke: var(--accent-green); /* Маркер зеленый */
 }
+/* НОВОЕ: Свечение для кнопки редактирования профиля */
+.edit-profile-button:hover svg path {
+    filter: drop-shadow(0 0 5px var(--accent-green));
+}
+
 
 /* Chat List */
 .chat-list-sub-screen .chat-list {
@@ -210,6 +271,7 @@ body {
     background-color: var(--bg-primary); /* Фон для самого списка чатов */
 }
 
+
 .chat-item {
     background-color: var(--bg-secondary); /* Фон для каждого элемента чата */
     padding: 15px;
@@ -217,20 +279,27 @@ body {
     border-radius: 10px;
     text-align: left;
     cursor: pointer;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     border: 1px solid var(--border-color);
 }
 
+
 .chat-item:hover {
     background-color: var(--bg-tertiary); /* Чуть светлее при наведении */
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); /* Легкое свечение */
+    /* НОВОЕ: Более выразительное свечение и рамка при наведении */
+    box-shadow: var(--glow-blue);
+    border-color: var(--accent-blue);
 }
+
 
 .chat-item h3 {
     margin: 0 0 4px 0;
-    color: var(--text-light); /* Имя чата белое */
+    /* НОВОЕ: Название чата акцентным синим */
+    color: var(--accent-blue);
     font-size: 17px;
+    text-shadow: 0 0 3px rgba(0, 191, 255, 0.2);
 }
+
 
 .chat-item p {
     margin: 0;
@@ -238,6 +307,7 @@ body {
     font-size: 13px;
     opacity: 0.8;
 }
+
 
 /* Chat Conversation */
 .chat-conversation-sub-screen .message-display {
@@ -250,6 +320,7 @@ body {
     flex-direction: column;
 }
 
+
 .message-bubble {
     padding: 10px 15px;
     border-radius: 18px;
@@ -260,19 +331,26 @@ body {
     font-size: 15px;
 }
 
+
 .message-bubble.user-message {
     background-color: var(--accent-green);
     color: var(--text-dark); /* Черный текст на зеленом фоне */
     align-self: flex-end;
     border-bottom-right-radius: 4px;
+    /* НОВОЕ: Свечение для своих сообщений */
+    box-shadow: var(--glow-green);
 }
+
 
 .message-bubble.other-message {
     background-color: var(--bg-tertiary); /* Темно-серый фон для других сообщений */
     color: var(--text-light);
     align-self: flex-start;
     border-bottom-left-radius: 4px;
+    /* НОВОЕ: Мягкая тень для чужих сообщений */
+    box-shadow: var(--shadow-subtle);
 }
+
 
 .message-input-form {
     display: flex;
@@ -281,6 +359,7 @@ body {
     background-color: var(--bg-secondary); /* Фон панели ввода */
 }
 
+
 .message-input-form input {
     flex-grow: 1;
     margin-right: 10px;
@@ -288,11 +367,23 @@ body {
     background-color: var(--bg-tertiary); /* Фон поля ввода сообщения */
     border: 1px solid var(--border-color);
     color: var(--text-light);
+    border-radius: 8px; /* Добавлено для консистентности */
+    padding: 10px 14px; /* Добавлено для консистентности */
+    outline: none; /* Добавлено для консистентности */
+    box-sizing: border-box; /* Добавлено для консистентности */
+    font-size: 16px; /* Добавлено для консистентности */
 }
+
 
 .message-input-form input::placeholder {
     color: var(--text-placeholder);
 }
+
+.message-input-form input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.3); /* Мягкое свечение при фокусе */
+}
+
 
 .message-input-form button {
     background-color: var(--accent-blue); /* Кнопка "Отправить" синяя */
@@ -300,7 +391,10 @@ body {
     padding: 10px 20px;
     font-size: 16px;
     box-shadow: none;
+    border-radius: 8px; /* Добавлено для консистентности */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Добавлено для консистентности */
 }
+
 
 .message-input-form button:hover {
     background-color: #00A3DA;
@@ -308,14 +402,17 @@ body {
 }
 
 
-/* Sidebar Styles */
+
+
+/* Sidebar Styles (слайд-меню) */
 .sidebar {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 280px;
-    background-color: var(--bg-secondary); /* Фон сайдбара */
+    /* НОВОЕ: Градиент для сайдбара, чтобы он не был "прозрачным" и отличался */
+    background: linear-gradient(to bottom, #1E1E1E, #1A1A1A); /* Темный, слегка градиентный фон */
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     z-index: 20;
@@ -325,9 +422,11 @@ body {
     flex-direction: column;
 }
 
+
 .sidebar.active {
     transform: translateX(0);
 }
+
 
 .sidebar-header {
     padding: 20px;
@@ -335,11 +434,14 @@ body {
     text-align: left;
 }
 
+
 .sidebar-header h3 {
     margin: 0;
     color: var(--accent-green); /* Заголовок меню зеленый */
     font-size: 24px;
+    text-shadow: 0 0 8px rgba(0, 255, 0, 0.4); /* Неоновое свечение */
 }
+
 
 .sidebar ul {
     list-style: none;
@@ -348,6 +450,7 @@ body {
     flex-grow: 1; /* Занимает оставшееся место */
 }
 
+
 .sidebar li {
     border-bottom: 1px solid var(--border-color);
     text-align: left;
@@ -355,6 +458,7 @@ body {
 .sidebar li:last-child {
     border-bottom: none;
 }
+
 
 .sidebar-item {
     color: var(--text-light);
@@ -365,10 +469,13 @@ body {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+
 .sidebar-item:hover {
     background-color: var(--bg-tertiary); /* Темнее фон при наведении */
-    color: var(--accent-blue);
+    color: var(--accent-blue); /* НОВОЕ: Синий текст при наведении */
+    text-shadow: 0 0 5px rgba(0, 191, 255, 0.2);
 }
+
 
 .overlay {
     position: absolute;
@@ -380,6 +487,7 @@ body {
     z-index: 15;
     display: none;
 }
+
 
 /* Modal Overlay (for search chat) */
 .modal-overlay {
@@ -396,26 +504,48 @@ body {
     display: none;
 }
 
+
 .modal-content {
     background-color: var(--bg-secondary);
     padding: 30px;
     border-radius: 12px;
+    /* НОВОЕ: Выразительная тень и свечение модального окна */
     box-shadow: var(--shadow-subtle), var(--glow-purple);
+    border: 1px solid var(--accent-purple); /* Рамка акцентным цветом */
     width: 90%;
     max-width: 350px;
     text-align: center;
     color: var(--text-light);
 }
 
+
 .modal-content h3 {
     color: var(--accent-purple);
     margin-bottom: 25px;
+    text-shadow: 0 0 8px rgba(187, 134, 252, 0.4); /* Свечение заголовка */
 }
+
 
 .modal-content input {
     margin-bottom: 20px;
     width: calc(100% - 20px);
+    border: 1px solid var(--border-color); /* Добавлено для консистентности */
+    background-color: var(--bg-tertiary); /* Добавлено для консистентности */
+    color: var(--text-light); /* Добавлено для консистентности */
+    border-radius: 8px; /* Добавлено для консистентности */
+    padding: 12px; /* Добавлено для консистентности */
+    outline: none; /* Добавлено для консистентности */
+    box-sizing: border-box; /* Добавлено для консистентности */
+    font-size: 16px; /* Добавлено для консистентности */
 }
+.modal-content input::placeholder {
+    color: var(--text-placeholder);
+}
+.modal-content input:focus {
+    border-color: var(--accent-purple);
+    box-shadow: var(--glow-purple);
+}
+
 
 .modal-buttons {
     display: flex;
@@ -423,18 +553,23 @@ body {
     margin-top: 25px;
 }
 
+
 .modal-buttons button {
     background-color: var(--accent-purple);
     color: var(--text-dark);
     font-size: 16px;
     padding: 12px 25px;
     box-shadow: none;
+    border-radius: 8px; /* Добавлено для консистентности */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Добавлено для консистентности */
 }
+
 
 .modal-buttons button:hover {
     background-color: #A06AD3;
     box-shadow: var(--glow-purple);
 }
+
 
 .modal-buttons .cancel-button {
     background-color: var(--bg-tertiary); /* Темно-серая кнопка отмены */
@@ -445,13 +580,16 @@ body {
     box-shadow: none;
 }
 
+
 #searchStatusMessage {
     color: var(--accent-green);
     margin-top: -10px;
     margin-bottom: 10px;
     font-size: 14px;
     min-height: 18px;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3); /* Легкое свечение */
 }
+
 
 /* Profile Container Styles */
 .profile-sub-screen .profile-content {
@@ -465,31 +603,50 @@ body {
     background-color: var(--bg-primary); /* Фон контента профиля */
 }
 
+
 .avatar-placeholder {
     width: 120px;
     height: 120px;
     background-color: var(--bg-tertiary);
     border-radius: 50%;
-    border: 3px solid var(--accent-green);
+    /* НОВОЕ: Градиентная обводка и более сильное свечение для аватарки */
+    background: linear-gradient(45deg, var(--accent-green), var(--accent-blue)); /* Яркий градиент */
+    padding: 3px; /* Толщина обводки */
+    box-shadow: var(--glow-green), 0 0 15px rgba(0, 255, 0, 0.7); /* Сильное зеленое свечение */
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-    box-shadow: var(--glow-green);
+    /* Убираем старый border и box-shadow, они заменены выше */
+    /* border: 3px solid var(--accent-green); */
+    /* box-shadow: var(--glow-green); */
 }
 .avatar-placeholder svg {
+    /* Чтобы иконка была внутри padding, нужно отделить от градиентной обводки */
+    background-color: var(--bg-tertiary); /* Фоновый цвет для самой иконки внутри обводки */
+    border-radius: 50%;
+    padding: 10px; /* Отступ внутри обводки */
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box; /* Чтобы padding не увеличивал размер */
+
     fill: none;
     stroke: var(--accent-green);
     stroke-width: 2;
-    width: 60px;
-    height: 60px;
+    /* Увеличение размера SVG, если она была маленькой */
+    /* width: 60px; */
+    /* height: 60px; */
 }
 
+
 #profileName {
-    color: var(--text-light); /* Имя профиля белое */
+    /* НОВОЕ: Имя профиля акцентным синим */
+    color: var(--accent-blue);
     font-size: 28px;
     margin-bottom: 20px;
+    text-shadow: 0 0 8px rgba(0, 191, 255, 0.4); /* Мягкое свечение */
 }
+
 
 .about-me-section {
     background-color: var(--bg-secondary); /* Фон для секции "О себе" */
@@ -498,16 +655,21 @@ body {
     width: 90%;
     max-width: 300px;
     text-align: left;
+    /* НОВОЕ: Акцентная левая граница */
     border: 1px solid var(--border-color);
+    border-left: 5px solid var(--accent-green); /* Зеленая полоса слева */
     box-shadow: var(--shadow-subtle);
 }
+
 
 .about-me-section h4 {
     color: var(--accent-green); /* Заголовок "О себе" зеленый */
     margin-top: 0;
     margin-bottom: 10px;
     font-size: 18px;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3); /* Мягкое свечение */
 }
+
 
 .about-me-section p {
     color: var(--text-secondary); /* Текст "О себе" светло-серый */
