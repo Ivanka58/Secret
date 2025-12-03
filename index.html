@@ -1,105 +1,33 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Секретный Мессенджер</title>
+    <title>Secret Messenger</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Иконка для бургер-меню, используя Font Awesome CDN для простоты -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div id="app">
-        <!-- Экран входа -->
-        <div id="login-screen" class="screen">
-            <div class="login-card">
-                <h2>Добро пожаловать в Секретный Мессенджер</h2>
-                <input type="text" id="code-input" placeholder="Введите ваш уникальный код" autocomplete="off">
-                <input type="password" id="password-input" placeholder="Введите ваш пароль" autocomplete="off">
-                <button id="login-button">Войти</button>
-                <p id="login-error" class="error-message"></p>
-            </div>
-        </div>
-
-        <!-- Основной экран мессенджера -->
-        <div id="messenger-screen" class="screen hidden">
-            <!-- Боковое выдвижное меню -->
-            <div id="side-menu" class="side-menu">
-                <div class="side-menu-header">
-                    <img id="side-menu-avatar" src="https://via.placeholder.com/60" alt="Аватар" class="side-menu-avatar">
-                    <span id="my-profile-name-in-menu">Шеф (Вы)</span>
-                </div>
-                <ul>
-                    <li><a href="#" id="my-profile-link"><i class="fas fa-user"></i> Мой профиль</a></li>
-                    <li><a href="#" id="settings-link"><i class="fas fa-cog"></i> Настройки</a></li>
-                    <!-- Добавить выход или другие пункты по необходимости -->
-                </ul>
-            </div>
-
-            <div class="sidebar">
-                <div class="header">
-                    <button id="burger-menu-button" class="icon-button"><i class="fas fa-bars"></i></button>
-                    <h3>Чаты</h3>
-                    <button id="search-contact-button" class="icon-button"><i class="fas fa-search"></i></button>
-                </div>
-                <ul id="chat-list">
-                    <!-- Заглушка чата с собой -->
-                    <li class="chat-item" data-chat-id="self-chat">
-                        <img src="https://via.placeholder.com/40" alt="Аватар">
-                        <div class="chat-info">
-
-                            <span class="chat-name">Шеф (Вы)</span>
-                            <span class="last-message"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="chat-area">
-                <div class="chat-header">
-                    <button id="back-to-chats-button" class="icon-button hidden-desktop"><i class="fas fa-arrow-left"></i></button>
-                    <img src="https://via.placeholder.com/40" alt="Аватар" class="current-chat-avatar">
-                    <span class="current-chat-name"></span>
-                </div>
-                <div id="message-list" class="message-list">
-                    <!-- Сообщения будут добавляться сюда JS -->
-                </div>
-                <div class="message-input-area">
-                    <input type="text" id="message-input" placeholder="Написать сообщение..." autofocus>
-                    <button id="send-button"><i class="fas fa-paper-plane"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Экран "Мой профиль" -->
-        <div id="profile-screen" class="screen hidden">
-            <div class="profile-header">
-                <button id="back-from-profile-button" class="icon-button"><i class="fas fa-arrow-left"></i></button>
-                <h3>Мой профиль</h3>
-                <button id="edit-profile-button" class="icon-button"><i class="fas fa-pencil-alt"></i></button>
-            </div>
-            <div class="profile-content">
-                <img id="profile-avatar" src="https://via.placeholder.com/120" alt="Аватар" class="profile-avatar">
-                <span id="profile-nickname" class="profile-nickname">Шеф (Вы)</span>
-                
-                <div class="profile-section">
-                    <h4>О себе</h4>
-                    <textarea id="profile-about-input" class="profile-about-input" placeholder="Расскажите о себе" readonly></textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- Модальное окно для поиска контактов (пока скрыто) -->
-        <div id="search-modal" class="modal hidden">
-            <div class="modal-content">
-                <h3>Найти контакт по коду</h3>
-                <input type="text" id="search-contact-code-input" placeholder="Введите код контакта">
-                <button id="add-contact-button">Найти и Добавить</button>
-                <button id="close-search-modal">Закрыть</button>
-                <p id="search-error" class="error-message"></p>
-            </div>
-        </div>
-
+    <div class="login-container">
+        <h1>Welcome to Secret Messenger</h1>
+        <form id="loginForm">
+            <input type="text" id="loginCode" placeholder="Enter Login Code" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
     </div>
+
+    <div class="chat-container" style="display: none;">
+        <h2>Secret Chat</h2>
+        <div class="message-display" id="messageDisplay">
+            <!-- Messages will be displayed here -->
+        </div>
+        <form id="chatForm">
+            <input type="text" id="chatCode" placeholder="Enter Chat Code" required>
+            <input type="text" id="messageInput" placeholder="Type your message..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
     <script src="script.js"></script>
 </body>
-                        </html>
+</html>
