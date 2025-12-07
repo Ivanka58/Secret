@@ -1,4 +1,18 @@
-/* stati/ss/style.css - Максимально улучшенный дизайн: Светлый, красочный, дружелюбный */
+/* stati/style.ss - Максимально улучшенный дизайн: Светлый, красочный, дружелюбный */
+
+/*
+Шеф, я обнаружил и исправляю несколько критических проблем:
+1.  Приложение не занимало весь экран, а отображалось в фиксированном "окне".
+2.  Начальный экран входа был смещен.
+3.  Кнопка "Отправить" в чате выходила за границы.
+4.  Самое странное: синие сообщения (от "собеседника") отображались справа, как будто это сообщения пользователя, что указывает на серьезную проблему со стилями.
+
+Цель:
+-   Сделать приложение на весь экран (100% ширины и высоты видимой области браузера).
+-   Обеспечить стабильность элементов, чтобы они не "плавали" при переключениях.
+-   Исправить обрезание кнопки "Отправить".
+-   Исправить расположение синих сообщений (они должны быть слева).
+*/
 
 :root {
     /* Основные цвета - светлая, дружелюбная палитра */
@@ -50,12 +64,13 @@ body {
     background-size: 400% 400%;
     animation: gradientAnimation 15s ease infinite; /* Плавная, спокойная анимация */
     color: var(--text-light); /* Белый текст на синем фоне */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    /* display: flex;  УДАЛЕНО: для полноэкранного режима body не должен центрировать app-wrapper */
+    /* justify-content: center; УДАЛЕНО */
+    /* align-items: center; УДАЛЕНО */
+    min-height: 100vh; /* Минимальная высота - вся видимая область */
+    width: 100vw; /* Ширина - вся видимая область */
     margin: 0;
-    overflow: hidden;
+    overflow: hidden; /* Предотвращаем прокрутку body */
 }
 
 /* Анимация градиента для body */
@@ -67,16 +82,17 @@ body {
 
 /* Общая обертка для всех экранов, чтобы центрировать приложение */
 .app-wrapper {
-    width: 90%;
-    max-width: 400px;
-    height: 650px;
+    width: 100%; /* ЗАМЕНЕНО: Занимает всю ширину body */
+    height: 100vh; /* ЗАМЕНЕНО: Занимает всю высоту видимой области */
     position: relative;
     background-color: transparent; /* Сделано прозрачным, чтобы видеть градиент body */
     overflow: hidden;
-    border-radius: 18px; /* Более округлые углы */
-    /* НОВОЕ: Мягкая, но заметная тень, без свечения */
-    box-shadow: var(--shadow-medium);
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Легкая, ненавязчивая белая рамка */
+    /* border-radius: 18px; УДАЛЕНО: теперь это не "коробка", а все приложение */
+    /* box-shadow: var(--shadow-medium); УДАЛЕНО */
+    /* border: 1px solid rgba(255, 255, 255, 0.3); УДАЛЕНО */
+    border-radius: 0; /* УБРАНО скругление, т.к. приложение на весь экран */
+    box-shadow: none; /* УБРАНА тень */
+    border: none; /* УБРАНА рамка */
 }
 
 /* Стили для основных экранов (login, main-app) */
@@ -90,12 +106,13 @@ body {
     background: linear-gradient(135deg, var(--app-gradient-start), var(--app-gradient-mid), var(--app-gradient-end));
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; УДАЛЕНО: Выравнивание контента теперь управляется специфичными для экрана правилами */
+    /* align-items: center; УДАЛЕНО */
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
     opacity: 0;
     pointer-events: none;
-    border-radius: 16px; /* Скругление углов и для внутренних экранов */
+    /* border-radius: 16px; УДАЛЕНО: теперь это не "коробка", а внутренний экран */
+    border-radius: 0; /* УБРАНО скругление */
 }
 
 .screen.active {
@@ -106,8 +123,8 @@ body {
 
 /* Отдельные стили для экрана входа */
 .login-screen {
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: flex-start; /* Выравнивание контента по верху */
+    align-items: flex-start; /* Выравнивание контента по левому краю */
     padding: 40px;
     box-sizing: border-box;
     color: var(--text-light); /* Белый текст на синем градиенте */
@@ -181,7 +198,7 @@ body {
 .main-app-screen {
     /* background уже определен в .screen */
     /* Flex-grow для заполнения доступного пространства */
-    flex-grow: 1; 
+    flex-grow: 1;
 }
 
 /* Стили для дочерних экранов внутри main-app-screen (chat list, chat conversation, profile) */
@@ -198,7 +215,8 @@ body {
     transition: transform 0.4s ease-in-out;
     transform: translateX(100%);
     z-index: 1;
-    border-radius: 16px; /* Скругление углов */
+    /* border-radius: 16px; УДАЛЕНО: теперь это не "коробка", а внутренний экран */
+    border-radius: 0; /* УБРАНО скругление */
 }
 
 .sub-screen.active {
@@ -217,6 +235,7 @@ body {
     box-shadow: var(--shadow-soft);
     z-index: 10;
     color: var(--text-dark); /* Темный текст для заголовка */
+    flex-shrink: 0; /* Гарантируем, что хедер не будет сжиматься */
 }
 
 .app-header h2 {
@@ -313,7 +332,7 @@ body {
     flex-grow: 1;
     overflow-y: auto;
     padding: 15px;
-    text-align: left;
+    /* text-align: left; УДАЛЕНО: это не нужно для flex-контейнера */
     display: flex;
     flex-direction: column;
     /* background уже определен в .sub-screen */
@@ -339,25 +358,34 @@ body {
 }
 
 .message-bubble.other-message {
-    /* НОВОЕ: Синие сообщения собеседника */
+    /* !!! ВАЖНОЕ ИСПРАВЛЕНИЕ / ДИАГНОСТИКА !!! */
+    /* По скриншоту, синие сообщения отображались справа. Это очень странно,
+       так как align-self: flex-start; должен прижимать их влево.
+       Добавил !important для диагностики, чтобы убедиться, что свойство не переопределяется.
+       Также добавил красную рамку, чтобы четко видеть границы элемента.
+       Если после этих изменений синий пузырек все еще справа, это укажет
+       на более глубокую проблему (возможно, в скрипте или HTML). */
     background-color: var(--accent-blue-main);
-    align-self: flex-start;
+    align-self: flex-start !important; /* Диагностика: принудительно выравниваем влево */
     border-bottom-left-radius: 6px;
     box-shadow: var(--shadow-soft);
+    border: 2px solid red !important; /* ВРЕМЕННО для диагностики: яркая рамка */
 }
 
 .message-input-form {
     display: flex;
-    padding: 15px;
+    padding: 10px; /* УМЕНЬШЕНО: для экономии места и предотвращения обрезки кнопки */
     border-top: 1px solid var(--border-color-light);
     background-color: rgba(255, 255, 255, 0.95); /* Почти белый фон формы */
-    gap: 10px; /* Отступ между полем ввода и кнопкой */
-    width: 100%; /* Гарантируем, что занимает всю ширину */
+    gap: 8px; /* УМЕНЬШЕНО: для экономии места */
+    width: 100%;
     flex-shrink: 0; /* Чтобы не сжимался */
 }
 
 .message-input-form input {
     flex-grow: 1; /* Занимает все доступное пространство */
+    flex-basis: 0; /* Важно для flex-grow, чтобы работал корректно */
+    min-width: 0; /* Позволяет полю ввода сжиматься, предотвращая переполнение */
     margin-bottom: 0;
     background-color: var(--bg-lightest); /* Чисто белый фон поля */
     border: 1px solid var(--border-color-light);
@@ -414,7 +442,8 @@ body {
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1); /* Мягкая тень */
     display: flex;
     flex-direction: column;
-    color: var(--text-dark); /* Темный текст для сайдбара */
+    color: var(--text-dark);
+    /* border-radius: 0; УБРАНО скругление, т.к. sidebar теперь занимает всю высоту */
 }
 
 .sidebar.active {
@@ -659,4 +688,4 @@ body {
     color: var(--text-dark); /* Темный текст */
     line-height: 1.6;
     font-size: 16px;
-}
+    }
