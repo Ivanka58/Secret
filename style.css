@@ -1,6 +1,4 @@
-ss
 /* stati/ss/style.css - Максимально улучшенный дизайн: Светлый, красочный, дружелюбный */
-
 
 :root {
     /* Основные цвета - светлая, дружелюбная палитра */
@@ -10,15 +8,12 @@ ss
     --bg-tertiary: #D0D2D6; /* Фон для полей ввода, некоторых пузырьков (еще темнее, но светлый) */
     --bg-quaternary: #BFBFC2; /* Фон для активных состояний, кнопок (мягкий серый) */
 
-
     --text-dark: #1C1E21; /* Темный текст для основного контента */
     --text-secondary-dark: #65676B; /* Средне-серый текст для вспомогательной информации */
     --text-placeholder-dark: #90949C; /* Цвет плейсхолдеров */
     --text-light: #FFFFFF; /* Белый текст (на ярких фонах) */
 
-
     --border-color-light: #CED0D4; /* Цвет границ и разделителей (мягкий серый) */
-
 
     /* Акцентные цвета - яркие и жизнерадостные */
     --accent-blue-main: #007bff; /* Яркий синий (основные кнопки, UI, сообщения собеседника) */
@@ -27,13 +22,11 @@ ss
     --accent-red-main: #dc3545; /* Классический красный (предупреждения) */
     --accent-orange-main: #fd7e14; /* Оранжевый (сообщения пользователя, кнопки) */
 
-
     /* Более светлые/темные оттенки для эффектов */
     --accent-blue-light: #66b3ff;
     --accent-green-light: #5cb85c;
     --accent-purple-light: #8e6ee0;
     --accent-orange-light: #ffac6d;
-
 
     /* Тени - мягкие и деликатные для светлого дизайна */
     --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -65,14 +58,12 @@ body {
     overflow: hidden;
 }
 
-
 /* Анимация градиента для body */
 @keyframes gradientAnimation {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
 
 /* Общая обертка для всех экранов, чтобы центрировать приложение */
 .app-wrapper {
@@ -87,7 +78,6 @@ body {
     box-shadow: var(--shadow-medium);
     border: 1px solid rgba(255, 255, 255, 0.3); /* Легкая, ненавязчивая белая рамка */
 }
-
 
 /* Стили для основных экранов (login, main-app) */
 .screen {
@@ -108,13 +98,11 @@ body {
     border-radius: 16px; /* Скругление углов и для внутренних экранов */
 }
 
-
 .screen.active {
     opacity: 1;
     pointer-events: auto;
     transform: translateX(0);
 }
-
 
 /* Отдельные стили для экрана входа */
 .login-screen {
@@ -125,7 +113,6 @@ body {
     color: var(--text-light); /* Белый текст на синем градиенте */
     /* background уже определен в .screen */
 }
-
 
 .login-title {
     /* НОВОЕ: Белый, дружелюбный заголовок */
@@ -138,14 +125,12 @@ body {
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3); /* Более выраженная тень */
 }
 
-
 .login-form {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
-
 
 .login-form input {
     width: 100%;
@@ -161,17 +146,14 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-
 .login-form input::placeholder {
     color: var(--text-placeholder-dark); /* Темный плейсхолдер */
 }
-
 
 .login-form input:focus {
     border-color: var(--accent-orange-main); /* Оранжевая рамка при фокусе */
     box-shadow: 0 0 0 4px rgba(253, 126, 20, 0.4); /* Мягкая оранжевая обводка */
 }
-
 
 .login-form button {
     /* НОВОЕ: Ярко-оранжевая кнопка для контраста с синим фоном */
@@ -189,13 +171,11 @@ body {
     align-self: flex-start;
 }
 
-
 .login-form button:hover {
     background-color: var(--accent-orange-light); /* Чуть светлее при наведении */
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); /* Еще более выраженная тень */
     transform: translateY(-3px);
 }
-
 
 /* --- Main App Screen Styles (содержит чаты и профиль) --- */
 .main-app-screen {
@@ -203,7 +183,6 @@ body {
     /* Flex-grow для заполнения доступного пространства */
     flex-grow: 1; 
 }
-
 
 /* Стили для дочерних экранов внутри main-app-screen (chat list, chat conversation, profile) */
 .sub-screen {
@@ -222,12 +201,10 @@ body {
     border-radius: 16px; /* Скругление углов */
 }
 
-
 .sub-screen.active {
     transform: translateX(0);
     z-index: 2;
 }
-
 
 /* Header for Chat List, Chat Conversation, Profile */
 .app-header {
@@ -242,7 +219,6 @@ body {
     color: var(--text-dark); /* Темный текст для заголовка */
 }
 
-
 .app-header h2 {
     margin: 0;
     /* НОВОЕ: Насыщенный синий заголовок */
@@ -250,7 +226,6 @@ body {
     font-size: 24px; /* Крупнее */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05); /* Легкая тень */
 }
-
 
 .menu-button, .search-button, .back-button, .edit-profile-button {
     background: none;
@@ -271,7 +246,6 @@ body {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.15); /* Заметная тень */
 }
 
-
 /* НОВОЕ: Явные цвета для иконок на светлом фоне шапки */
 .menu-button svg, .search-button svg, .back-button svg {
     fill: none;
@@ -284,7 +258,6 @@ body {
     stroke: var(--accent-orange-main); /* Яркий оранжевый при наведении */
 }
 
-
 .edit-profile-button svg path {
     stroke: var(--accent-green-main); /* Ярко-зеленый маркер */
     stroke-width: 2.5;
@@ -295,7 +268,6 @@ body {
     stroke: var(--accent-orange-main); /* Оранжевый при наведении */
 }
 
-
 /* Chat List */
 .chat-list-sub-screen .chat-list {
     flex-grow: 1;
@@ -303,7 +275,6 @@ body {
     padding: 10px;
     /* background уже определен в .sub-screen */
 }
-
 
 .chat-item {
     background-color: rgba(255, 255, 255, 0.9); /* Почти белый фон карточки */
@@ -317,13 +288,11 @@ body {
     box-shadow: var(--shadow-soft); /* Мягкая тень */
 }
 
-
 .chat-item:hover {
     background-color: var(--bg-lightest); /* Чистый белый при наведении */
     box-shadow: var(--shadow-medium); /* Чуть более выраженная тень */
     border-color: var(--accent-blue-main); /* Легкая синяя рамка */
 }
-
 
 .chat-item h3 {
     margin: 0 0 4px 0;
@@ -332,14 +301,12 @@ body {
     font-size: 19px; /* Крупнее */
 }
 
-
 .chat-item p {
     margin: 0;
     color: var(--text-secondary-dark); /* Светло-серый текст */
     font-size: 15px; /* Чуть крупнее */
     opacity: 1;
 }
-
 
 /* Chat Conversation */
 .chat-conversation-sub-screen .message-display {
@@ -352,7 +319,6 @@ body {
     /* background уже определен в .sub-screen */
 }
 
-
 .message-bubble {
     padding: 12px 18px;
     border-radius: 20px; /* Более округлые */
@@ -364,7 +330,6 @@ body {
     color: var(--text-light); /* Белый текст для всех пузырьков */
 }
 
-
 .message-bubble.user-message {
     /* НОВОЕ: Оранжевые сообщения пользователя */
     background-color: var(--accent-orange-main);
@@ -373,7 +338,6 @@ body {
     box-shadow: var(--shadow-soft);
 }
 
-
 .message-bubble.other-message {
     /* НОВОЕ: Синие сообщения собеседника */
     background-color: var(--accent-blue-main);
@@ -381,7 +345,6 @@ body {
     border-bottom-left-radius: 6px;
     box-shadow: var(--shadow-soft);
 }
-
 
 .message-input-form {
     display: flex;
@@ -392,7 +355,6 @@ body {
     width: 100%; /* Гарантируем, что занимает всю ширину */
     flex-shrink: 0; /* Чтобы не сжимался */
 }
-
 
 .message-input-form input {
     flex-grow: 1; /* Занимает все доступное пространство */
@@ -408,17 +370,14 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-
 .message-input-form input::placeholder {
     color: var(--text-placeholder-dark);
 }
-
 
 .message-input-form input:focus {
     border-color: var(--accent-orange-main); /* Оранжевая рамка при фокусе */
     box-shadow: 0 0 0 3px rgba(253, 126, 20, 0.3); /* Оранжевая обводка */
 }
-
 
 .message-input-form button {
     /* НОВОЕ: Ярко-оранжевая кнопка отправки */
@@ -433,13 +392,11 @@ body {
     flex-shrink: 0; /* Чтобы кнопка не сжималась */
 }
 
-
 .message-input-form button:hover {
     background-color: var(--accent-orange-light);
     box-shadow: var(--shadow-medium);
     transform: translateY(-2px);
 }
-
 
 /* Sidebar Styles (слайд-меню) */
 .sidebar {
@@ -460,18 +417,15 @@ body {
     color: var(--text-dark); /* Темный текст для сайдбара */
 }
 
-
 .sidebar.active {
     transform: translateX(0);
 }
-
 
 .sidebar-header {
     padding: 20px;
     border-bottom: 1px solid var(--border-color-light);
     text-align: left;
 }
-
 
 .sidebar-header h3 {
     margin: 0;
@@ -481,14 +435,12 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-
 .sidebar ul {
     list-style: none;
     padding: 0;
     margin: 0;
     flex-grow: 1;
 }
-
 
 .sidebar li {
     border-bottom: 1px solid rgba(206, 208, 212, 0.7); /* Более мягкий разделитель */
@@ -497,7 +449,6 @@ body {
 .sidebar li:last-child {
     border-bottom: none;
 }
-
 
 .sidebar-item {
     color: var(--text-dark); /* Темный текст */
@@ -508,14 +459,12 @@ body {
     transition: background-color 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
 }
 
-
 .sidebar-item:hover {
     background-color: var(--bg-tertiary); /* Чуть темнее при наведении */
     /* НОВОЕ: Ярко-оранжевый текст при наведении */
     color: var(--accent-orange-main);
     text-shadow: 0 0 0 transparent; /* Убираем тень */
 }
-
 
 .overlay {
     position: absolute;
@@ -527,7 +476,6 @@ body {
     z-index: 15;
     display: none;
 }
-
 
 /* Modal Overlay (for search chat) */
 .modal-overlay {
@@ -544,7 +492,6 @@ body {
     display: none;
 }
 
-
 .modal-content {
     background-color: rgba(255, 255, 255, 0.95); /* Почти белый фон модального окна */
     padding: 35px;
@@ -558,14 +505,12 @@ body {
     color: var(--text-dark); /* Темный текст */
 }
 
-
 .modal-content h3 {
     /* НОВОЕ: Яркий синий заголовок */
     color: var(--accent-blue-main);
     margin-bottom: 25px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
-
 
 .modal-content input {
     margin-bottom: 20px;
@@ -588,13 +533,11 @@ body {
     box-shadow: 0 0 0 3px rgba(253, 126, 20, 0.3);
 }
 
-
 .modal-buttons {
     display: flex;
     justify-content: space-around;
     margin-top: 25px;
 }
-
 
 .modal-buttons button {
     /* НОВОЕ: Яркая синяя кнопка */
@@ -607,13 +550,11 @@ body {
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-
 .modal-buttons button:hover {
     background-color: var(--accent-blue-light);
     box-shadow: var(--shadow-medium);
     transform: translateY(-2px);
 }
-
 
 .modal-buttons .cancel-button {
     background-color: var(--bg-quaternary); /* Более мягкий серый для отмены */
@@ -626,7 +567,6 @@ body {
     transform: translateY(-2px);
 }
 
-
 #searchStatusMessage {
     /* НОВОЕ: Ярко-зеленый статус */
     color: var(--accent-green-main);
@@ -636,7 +576,6 @@ body {
     min-height: 18px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
 }
-
 
 /* Profile Container Styles */
 .profile-sub-screen .profile-content {
@@ -649,7 +588,6 @@ body {
     overflow-y: auto;
     /* background уже определен в .sub-screen */
 }
-
 
 .avatar-placeholder {
     width: 140px;
@@ -681,13 +619,11 @@ body {
     height: 100%;
     box-sizing: border-box;
 
-
     fill: none;
     stroke: var(--accent-blue-main); /* Ярко-синий цвет иконки */
     stroke-width: 2.5;
     filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.1)); /* Мягкая тень иконки */
 }
-
 
 #profileName {
     /* НОВОЕ: Имя профиля ярко-оранжевым цветом */
@@ -696,7 +632,6 @@ body {
     margin-bottom: 25px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
-
 
 .about-me-section {
     background-color: rgba(255, 255, 255, 0.9); /* Почти белый фон */
@@ -711,7 +646,6 @@ body {
     box-shadow: var(--shadow-soft);
 }
 
-
 .about-me-section h4 {
     /* НОВОЕ: Заголовок "О себе" ярко-синим цветом */
     color: var(--accent-blue-main);
@@ -721,9 +655,8 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-
 .about-me-section p {
     color: var(--text-dark); /* Темный текст */
     line-height: 1.6;
     font-size: 16px;
-    }
+}
