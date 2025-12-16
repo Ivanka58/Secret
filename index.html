@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -7,9 +8,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Главный контейнер, который будет центрироваться на странице и содержать все экраны -->
     <div class="app-wrapper" id="appWrapper">
+
+        <!-- Экран входа -->
         <div class="screen login-screen active" id="loginScreen">
-            <h1 class="login-title">Добро пожаловать в Секретный Мессенджер</h1>
+            <h1 class="login-title">Добро<br>пожаловать<br>в<br>Секретный<br>Мессенджер</h1>
             <form id="loginForm" class="login-form">
                 <input type="text" id="loginCode" placeholder="Введите ваш уникальный код" required>
                 <input type="password" id="password" placeholder="Введите ваш пароль" required>
@@ -17,7 +21,9 @@
             </form>
         </div>
 
+        <!-- Основное приложение (Список чатов, Экран чата, Профиль) -->
         <div class="screen main-app-screen" id="mainAppScreen">
+            <!-- Боковое меню (Sidebar) -->
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-header">
                     <h3>Меню</h3>
@@ -29,6 +35,7 @@
             </div>
             <div class="overlay" id="overlay"></div>
 
+            <!-- Контейнер для списка чатов -->
             <div class="sub-screen chat-list-sub-screen active" id="chatListSubScreen">
                 <header class="app-header">
                     <button class="menu-button" id="menuButton">
@@ -39,16 +46,18 @@
                     <h2>Чаты</h2>
                     <button class="search-button" id="searchChatButton">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
                             <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M21 21L16.65 16.65" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                 </header>
                 <div class="chat-list" id="chatList">
-                    <!-- Список чатов -->
+                    <!-- Chat items will be rendered here by JS -->
                 </div>
             </div>
 
+            <!-- Контейнер для экрана беседы -->
             <div class="sub-screen chat-conversation-sub-screen" id="chatConversationSubScreen">
                 <header class="app-header">
                     <button class="back-button" id="backToChatListButton">
@@ -59,7 +68,7 @@
                     <h2 id="currentChatTitle"></h2>
                 </header>
                 <div class="message-display" id="messageDisplay">
-                    <!-- Сообщения -->
+                    <!-- Сообщения будут здесь -->
                 </div>
                 <form id="chatMessageForm" class="message-input-form">
                     <input type="text" id="messageInput" placeholder="Напишите сообщение..." required>
@@ -67,7 +76,8 @@
                 </form>
             </div>
 
-<div class="sub-screen profile-sub-screen" id="profileSubScreen">
+            <!-- Контейнер для профиля -->
+            <div class="sub-screen profile-sub-screen" id="profileSubScreen">
                 <header class="app-header">
                     <button class="back-button" id="backToChatListFromProfileButton">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,6 +104,19 @@
                         <p id="profileAbout">Пока пусто...</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для поиска чата -->
+    <div class="modal-overlay" id="searchChatModalOverlay">
+        <div class="modal-content">
+            <h3>Поиск чата</h3>
+            <input type="text" id="searchChatCodeInput" placeholder="Введите код чата">
+            <p id="searchStatusMessage"></p>
+            <div class="modal-buttons">
+                <button id="findChatButton">Найти</button>
+                <button id="cancelSearchButton" class="cancel-button">Отмена</button>
             </div>
         </div>
     </div>
